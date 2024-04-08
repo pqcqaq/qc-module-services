@@ -4,6 +4,9 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import online.zust.qcqcqc.services.module.log.entity.OperatorLog;
 import org.apache.ibatis.annotations.Mapper;
 
+/**
+ * @author qcqcqc
+ */
 @Mapper
 public interface OperatorLogMapper extends BaseMapper<OperatorLog> {
 }

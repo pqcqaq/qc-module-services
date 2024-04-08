@@ -1,0 +1,20 @@
+{
+  "online.zust.qcqcqc.services.module.log.annotation.OperationLog@value": {
+    "prefix": "{{",
+    "suffix": "}}",
+    "method": {
+      "result": true,
+      "resultName": "returnValue",
+      "parameters": true,
+      "parametersPrefix":[]
+    }
+  },
+  "online.zust.qcqcqc.services.module.log.annotation.OperationLog@condition": {
+    "method": {
+      "result": true,
+      "resultName": "returnValue",
+      "parameters": true,
+      "parametersPrefix":[]
+    }
+  }
+}

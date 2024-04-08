@@ -1,0 +1,31 @@
+server:
+  port: 9950
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    name: defaultDataSource
+    url: jdbc:mysql://localhost:33060/mbp_tests?serverTimezone=UTC
+    username: root
+    password: RrOoOoTt!@#123.
+
+mybatis-plus:
+  configuration:
+    #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+    cache-enabled: true
+
+mbp-enhance:
+  debug: true
+
+converter:
+  type: fastjson2
+debug: true
+
+promise:
+  executor:
+    core-pool-size: 16
+    max-pool-size: 32
+    queue-capacity: 1000
+    keep-alive-seconds: 60
+    thread-name-prefix: promise
