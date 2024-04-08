@@ -15,4 +15,4 @@ public class TestOperationLog {
     public void test(String test) {
         System.out.println(test);
     }
-}s
+}
