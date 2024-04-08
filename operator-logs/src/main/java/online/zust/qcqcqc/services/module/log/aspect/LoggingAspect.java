@@ -42,15 +42,21 @@ public class LoggingAspect implements ApplicationContextAware {
     /**
      * SpEL 上下文
      */
-    private static final StandardEvaluationContext EVALUATION_CONTEXT = new StandardEvaluationContext();
+    private static ApplicationContext applicationContext;
 
     static {
         log.info("LoggingAspect loaded");
     }
 
+    /**
+     * 构造方法
+     *
+     * @param applicationContext applicationContext
+     * @param logService         logService
+     */
     public LoggingAspect(ApplicationContext applicationContext, LogService logService) {
         this.logService = logService;
-        EVALUATION_CONTEXT.setBeanResolver(new BeanFactoryResolver(applicationContext));
+        LoggingAspect.applicationContext = applicationContext;
     }
 
     /**
@@ -61,7 +67,7 @@ public class LoggingAspect implements ApplicationContextAware {
      */
     @Override
     public void setApplicationContext(@NotNull ApplicationContext applicationContext) throws BeansException {
-        EVALUATION_CONTEXT.setBeanResolver(new BeanFactoryResolver(applicationContext));
+        LoggingAspect.applicationContext = applicationContext;
     }
 
     /**
@@ -80,18 +86,18 @@ public class LoggingAspect implements ApplicationContextAware {
      * @throws Throwable Throwable
      */
     @Around("method() && @annotation(operationLog)")
-    public Object log(ProceedingJoinPoint joinPoint, OperationLog operationLog) throws Throwable {
+    public Object log(final ProceedingJoinPoint joinPoint, final OperationLog operationLog) throws Throwable {
         // log
-        OperatorLog operatorLog = new OperatorLog();
+        final OperatorLog operatorLog = new OperatorLog();
         operatorLog.setLevel(operationLog.level());
 
-        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+        final MethodSignature signature = (MethodSignature) joinPoint.getSignature();
 
         // 方法的参数
-        Object[] args = joinPoint.getArgs();
+        final Object[] args = joinPoint.getArgs();
 
         // 参数的名称
-        String[] parameterNames = signature.getParameterNames();
+        final String[] parameterNames = signature.getParameterNames();
 
         // 运行结果
         Object proceed = null;
@@ -112,23 +118,27 @@ public class LoggingAspect implements ApplicationContextAware {
         }
         // 保存日志
         try {
+            final StandardEvaluationContext evaluationContext = new StandardEvaluationContext();
+            // 设置 BeanFactoryResolver，用于解析 SpEL 表达式中的 bean
+            evaluationContext.setBeanResolver(new BeanFactoryResolver(applicationContext));
+
             for (int i = 0; i < args.length; i++) {
                 // 把 Controller 方法中的参数都设置到 context 中，使用参数名称作为 key。
-                EVALUATION_CONTEXT.setVariable(parameterNames[i], args[i]);
+                evaluationContext.setVariable(parameterNames[i], args[i]);
             }
             // 把方法的返回值也设置到 context 中，使用 returnValue 作为 key。
-            EVALUATION_CONTEXT.setVariable("returnValue", proceed);
+            evaluationContext.setVariable("returnValue", proceed);
             // 如果不需要记录日志，则直接执行下去，不需要走下面的日志逻辑
-            String condition = operationLog.condition();
+            final String condition = operationLog.condition();
             if (!condition.isEmpty()) {
                 // 解析注解上定义的表达式，获取到结果
-                Boolean result = EXPRESSION_PARSER.parseExpression(condition, TEMPLATE_PARSER_CONTEXT).getValue(EVALUATION_CONTEXT, Boolean.class);
+                final Boolean result = EXPRESSION_PARSER.parseExpression(condition, TEMPLATE_PARSER_CONTEXT).getValue(evaluationContext, Boolean.class);
                 if (Boolean.FALSE.equals(result)) {
                     return joinPoint.proceed();
                 }
             }
             // 解析注解上定义的表达式，获取到结果
-            String result = EXPRESSION_PARSER.parseExpression(operationLog.value(), TEMPLATE_PARSER_CONTEXT).getValue(EVALUATION_CONTEXT, String.class);
+            final String result = EXPRESSION_PARSER.parseExpression(operationLog.value(), TEMPLATE_PARSER_CONTEXT).getValue(evaluationContext, String.class);
 
             operatorLog.setMsg(result);
         } catch (Exception e) {
