@@ -1,7 +1,10 @@
 package online.zust.qcqcqc.services.module.log;
 
+import online.zust.qcqcqc.services.exception.ServiceException;
 import online.zust.qcqcqc.services.module.log.annotation.OperationLog;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Bean;
 
 /**
  * @author qcqcqc
@@ -11,8 +14,25 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 public class TestOperationLog {
 
-    @OperationLog("#{test}")
-    public void test(String test) {
-        System.out.println(test);
+    @Bean
+    public Long userId() {
+        return 1L;
+    }
+
+    @OperationLog("")
+    public void fail() {
+        System.out.println("testFail");
+        throw new ServiceException("testFail");
+    }
+
+    @OperationLog("")
+    public void success() {
+        System.out.println("testSuccess");
+    }
+
+    @Test
+    public void doTest() {
+        success();
+        fail();
     }
 }

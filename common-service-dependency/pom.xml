@@ -12,6 +12,7 @@
 
     <groupId>online.zust.qcqcqc.services</groupId>
     <artifactId>common-service-dependency</artifactId>
+    <version>1.0.0</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>

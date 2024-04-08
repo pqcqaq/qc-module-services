@@ -11,6 +11,7 @@
 
     <groupId>online.zust.qcqcqc.services</groupId>
     <artifactId>operator-logs</artifactId>
+    <version>1.0.0</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -18,6 +19,11 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
+        <dependency>
+            <groupId>online.zust.qcqcqc.services</groupId>
+            <artifactId>common-service-dependency</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
 
 </project>
