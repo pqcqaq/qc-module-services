@@ -12,7 +12,6 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.expression.common.TemplateParserContext;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -26,11 +25,6 @@ import java.util.HashMap;
 @Slf4j
 public class LoggingAspect {
     private final LogService logService;
-
-    /**
-     * 表达式解析模板，在 {{  }} 中的内容，会被当作 SpEL 表达式进行解析
-     */
-    private static final TemplateParserContext TEMPLATE_PARSER_CONTEXT = new TemplateParserContext("{{", "}}");
 
     static {
         log.info("LoggingAspect loaded");
@@ -103,7 +97,7 @@ public class LoggingAspect {
                 }
             }
             // 解析注解上定义的表达式，获取到结果
-            final String result = SpElParser.parseExpression(operationLog.value(), TEMPLATE_PARSER_CONTEXT, paramMap, String.class);
+            final String result = SpElParser.parseExpression(operationLog.value(), paramMap, String.class);
 
             operatorLog.setMsg(result);
         } catch (Exception e) {
