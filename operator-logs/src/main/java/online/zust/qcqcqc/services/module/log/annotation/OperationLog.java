@@ -1,12 +1,9 @@
 package online.zust.qcqcqc.services.module.log.annotation;
 
 import online.zust.qcqcqc.services.module.log.enums.LogLevel;
-import org.intellij.lang.annotations.Language;
-
 import java.lang.annotation.*;
 
 /**
- * @author qcqcqc
  * @author qcqcqc
  * @date 2024/4/8
  * @time 10:15
@@ -24,7 +21,7 @@ public @interface OperationLog {
     LogLevel level() default LogLevel.INFO;
 
     /**
-     * 日志描述,在{{}} 中可以使用SpEl表达式
+     * 日志描述,在{{  }} 中可以使用SpEl表达式
      *
      * @return 日志描述
      */

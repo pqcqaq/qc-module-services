@@ -1,10 +1,8 @@
 package online.zust.qcqcqc.services.module.log.config;
 
 import online.zust.qcqcqc.services.module.log.aspect.LoggingAspect;
-import online.zust.qcqcqc.services.module.log.mapper.OperatorLogMapper;
-import online.zust.qcqcqc.services.module.log.service.LogService;
 import online.zust.qcqcqc.services.module.log.service.impl.LogServiceImpl;
-import org.mybatis.spring.annotation.MapperScan;
+import online.zust.qcqcqc.services.utils.SpElParser;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
@@ -16,7 +14,8 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @Import({
         LoggingAspect.class,
-        LogServiceImpl.class
+        LogServiceImpl.class,
+        SpElParser.class,
 })
 public class LogServiceAutoInject {
 }

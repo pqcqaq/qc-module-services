@@ -34,22 +34,4 @@ public enum LogLevel {
         this.name = name;
     }
 
-    public static LogLevel getLogLevel(int level) {
-        for (LogLevel logLevel : LogLevel.values()) {
-            if (logLevel.getLevel() == level) {
-                return logLevel;
-            }
-        }
-        return null;
-    }
-
-    public static LogLevel getLogLevel(String name) {
-        for (LogLevel logLevel : LogLevel.values()) {
-            if (logLevel.getName().equals(name)) {
-                return logLevel;
-            }
-        }
-        return null;
-    }
-
 }

@@ -1,73 +1,39 @@
 package online.zust.qcqcqc.services.module.log.aspect;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import online.zust.qcqcqc.services.exception.ServiceException;
 import online.zust.qcqcqc.services.module.log.annotation.OperationLog;
 import online.zust.qcqcqc.services.module.log.entity.OperatorLog;
 import online.zust.qcqcqc.services.module.log.service.LogService;
+import online.zust.qcqcqc.services.utils.SpElParser;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.expression.BeanFactoryResolver;
-import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.common.TemplateParserContext;
-import org.springframework.expression.spel.standard.SpelExpressionParser;
-import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.stereotype.Component;
+
+import java.util.HashMap;
 
 /**
  * @author qcqcqc
  */
 @Component
+@RequiredArgsConstructor
 @Aspect
 @Slf4j
-public class LoggingAspect implements ApplicationContextAware {
+public class LoggingAspect {
     private final LogService logService;
 
     /**
      * 表达式解析模板，在 {{  }} 中的内容，会被当作 SpEL 表达式进行解析
      */
     private static final TemplateParserContext TEMPLATE_PARSER_CONTEXT = new TemplateParserContext("{{", "}}");
-    /**
-     * SpEL 表达式解析器
-     */
-    private static final ExpressionParser EXPRESSION_PARSER = new SpelExpressionParser();
-
-    /**
-     * SpEL 上下文
-     */
-    private static ApplicationContext applicationContext;
 
     static {
         log.info("LoggingAspect loaded");
-    }
-
-    /**
-     * 构造方法
-     *
-     * @param applicationContext applicationContext
-     * @param logService         logService
-     */
-    public LoggingAspect(ApplicationContext applicationContext, LogService logService) {
-        this.logService = logService;
-        LoggingAspect.applicationContext = applicationContext;
-    }
-
-    /**
-     * 设置 applicationContext
-     *
-     * @param applicationContext applicationContext
-     * @throws BeansException BeansException
-     */
-    @Override
-    public void setApplicationContext(@NotNull ApplicationContext applicationContext) throws BeansException {
-        LoggingAspect.applicationContext = applicationContext;
     }
 
     /**
@@ -112,36 +78,32 @@ public class LoggingAspect implements ApplicationContextAware {
             if (e instanceof ServiceException se) {
                 operatorLog.setCause(se.getMessage());
             } else {
-                operatorLog.setCause("未捕获的系统异常信息！ -->" + e.getMessage());
+                operatorLog.setCause("未捕获的系统异常信息! --> " + e.getMessage());
             }
             throwable = e;
         }
         // 保存日志
         try {
-            final StandardEvaluationContext evaluationContext = new StandardEvaluationContext();
             // 设置 BeanFactoryResolver，用于解析 SpEL 表达式中的 bean
-            evaluationContext.setBeanResolver(new BeanFactoryResolver(applicationContext));
-
+            final HashMap<String, Object> paramMap = new HashMap<>(args.length + 1);
             for (int i = 0; i < args.length; i++) {
                 // 把 Controller 方法中的参数都设置到 context 中，使用参数名称作为 key。
-                evaluationContext.setVariable(parameterNames[i], args[i]);
+                paramMap.put(parameterNames[i], args[i]);
             }
             // 把方法的返回值也设置到 context 中，使用 returnValue 作为 key。
-            evaluationContext.setVariable("returnValue", proceed);
+            paramMap.put("returnValue", proceed);
+
             // 如果不需要记录日志，则直接执行下去，不需要走下面的日志逻辑
             final String condition = operationLog.condition();
             if (!condition.isEmpty()) {
                 // 解析注解上定义的表达式，获取到结果
-                final Boolean result = EXPRESSION_PARSER.parseExpression(condition).getValue(evaluationContext, Boolean.class);
+                final Boolean result = SpElParser.parseExpression(condition, paramMap, Boolean.class);
                 if (Boolean.FALSE.equals(result)) {
-                    if (throwable != null) {
-                        throw throwable;
-                    }
-                    return proceed;
+                    return returnOrThrow(throwable, proceed);
                 }
             }
             // 解析注解上定义的表达式，获取到结果
-            final String result = EXPRESSION_PARSER.parseExpression(operationLog.value(), TEMPLATE_PARSER_CONTEXT).getValue(evaluationContext, String.class);
+            final String result = SpElParser.parseExpression(operationLog.value(), TEMPLATE_PARSER_CONTEXT, paramMap, String.class);
 
             operatorLog.setMsg(result);
         } catch (Exception e) {
@@ -150,6 +112,18 @@ public class LoggingAspect implements ApplicationContextAware {
         }
         // 保存日志，如果有错误则继续向上抛出，否则返回结果
         logService.saveAsync(operatorLog);
+        return returnOrThrow(throwable, proceed);
+    }
+
+    /**
+     * 返回结果或者抛出异常
+     *
+     * @param throwable 异常
+     * @param proceed   结果
+     * @return 结果
+     * @throws Throwable 异常
+     */
+    private static Object returnOrThrow(Throwable throwable, Object proceed) throws Throwable {
         if (throwable != null) {
             throw throwable;
         }
