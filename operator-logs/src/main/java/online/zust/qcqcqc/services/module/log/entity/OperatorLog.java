@@ -1,5 +1,7 @@
 package online.zust.qcqcqc.services.module.log.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -17,7 +19,9 @@ public class OperatorLog {
     private Long id;
     private LogLevel level;
     private String msg;
+    @TableField(fill = FieldFill.INSERT)
     private Date createTime;
+    @TableField(fill = FieldFill.INSERT)
     private Long createBy;
     private Boolean success;
     private String cause;
