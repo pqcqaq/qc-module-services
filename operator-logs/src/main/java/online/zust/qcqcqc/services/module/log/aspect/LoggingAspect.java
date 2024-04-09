@@ -132,9 +132,12 @@ public class LoggingAspect implements ApplicationContextAware {
             final String condition = operationLog.condition();
             if (!condition.isEmpty()) {
                 // 解析注解上定义的表达式，获取到结果
-                final Boolean result = EXPRESSION_PARSER.parseExpression(condition, TEMPLATE_PARSER_CONTEXT).getValue(evaluationContext, Boolean.class);
+                final Boolean result = EXPRESSION_PARSER.parseExpression(condition).getValue(evaluationContext, Boolean.class);
                 if (Boolean.FALSE.equals(result)) {
-                    return joinPoint.proceed();
+                    if (throwable != null) {
+                        throw throwable;
+                    }
+                    return proceed;
                 }
             }
             // 解析注解上定义的表达式，获取到结果
