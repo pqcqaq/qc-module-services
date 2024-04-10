@@ -2,7 +2,7 @@ package online.zust.qcqcqc.services.module.log.config;
 
 import online.zust.qcqcqc.services.module.log.aspect.LoggingAspect;
 import online.zust.qcqcqc.services.module.log.service.impl.LogServiceImpl;
-import online.zust.qcqcqc.services.utils.SpElParser;
+import online.zust.qcqcqc.services.module.log.utils.SystemLogger;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Import;
 @Import({
         LoggingAspect.class,
         LogServiceImpl.class,
-        SpElParser.class,
+        SystemLogger.class,
 })
 public class LogServiceAutoInject {
 }
