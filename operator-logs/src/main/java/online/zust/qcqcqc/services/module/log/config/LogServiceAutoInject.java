@@ -15,7 +15,6 @@ import org.springframework.context.annotation.Import;
 @Import({
         LoggingAspect.class,
         LogServiceImpl.class,
-        SystemLogger.class,
 })
 public class LogServiceAutoInject {
 }

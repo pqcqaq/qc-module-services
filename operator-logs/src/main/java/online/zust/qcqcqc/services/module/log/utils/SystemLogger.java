@@ -1,27 +1,37 @@
 package online.zust.qcqcqc.services.module.log.utils;
 
-import lombok.RequiredArgsConstructor;
 import online.zust.qcqcqc.services.module.log.service.LogService;
+import online.zust.qcqcqc.utils.utils.ProxyUtil;
 import org.intellij.lang.annotations.Language;
-import org.springframework.stereotype.Component;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @author qcqcqc
  * Date: 2024/4/10
  * Time: 17:54
  */
-@Component
-@RequiredArgsConstructor
 public class SystemLogger {
-    private final LogService logService;
+
+    /**
+     * 日志服务
+     */
+    private static LogService logService;
+
+    @NotNull
+    private static LogService getBean() {
+        if (logService == null) {
+            logService = ProxyUtil.getBean(LogService.class);
+        }
+        return logService;
+    }
 
     /**
      * 保存日志
      *
      * @param spEl SpEl表达式
      */
-    public void info(@Language("spel") String spEl) {
-        logService.info(spEl);
+    public static void info(@Language("spel") String spEl) {
+        getBean().info(spEl);
     }
 
     /**
@@ -29,8 +39,8 @@ public class SystemLogger {
      *
      * @param spEl SpEl表达式
      */
-    public void error(@Language("spel") String spEl) {
-        logService.error(spEl);
+    public static void error(@Language("spel") String spEl) {
+        getBean().error(spEl);
     }
 
     /**
@@ -39,8 +49,8 @@ public class SystemLogger {
      * @param spEl SpEl表达式
      * @param e    异常
      */
-    public void error(@Language("spel") String spEl, Throwable e) {
-        logService.error(spEl, e);
+    public static void error(@Language("spel") String spEl, Throwable e) {
+        getBean().error(spEl, e);
     }
 
     /**
@@ -48,8 +58,8 @@ public class SystemLogger {
      *
      * @param e 异常
      */
-    public void error(Throwable e) {
-        logService.error(e);
+    public static void error(Throwable e) {
+        getBean().error(e);
     }
 
     /**
@@ -58,8 +68,8 @@ public class SystemLogger {
      * @param spEl  SpEl表达式
      * @param cause 错误原因
      */
-    public void error(String spEl, String cause) {
-        logService.error(spEl, cause);
+    public static void error(String spEl, String cause) {
+        getBean().error(spEl, cause);
     }
 
     /**
@@ -67,8 +77,8 @@ public class SystemLogger {
      *
      * @param spEl SpEl表达式
      */
-    public void debug(@Language("spel") String spEl) {
-        logService.debug(spEl);
+    public static void debug(@Language("spel") String spEl) {
+        getBean().debug(spEl);
     }
 
     /**
@@ -76,8 +86,8 @@ public class SystemLogger {
      *
      * @param spEl SpEl表达式
      */
-    public void warn(@Language("spel") String spEl) {
-        logService.warn(spEl);
+    public static void warn(@Language("spel") String spEl) {
+        getBean().warn(spEl);
     }
 
     /**
@@ -86,8 +96,8 @@ public class SystemLogger {
      * @param spEl SpEl表达式
      * @param e    异常
      */
-    public void warn(@Language("spel") String spEl, Throwable e) {
-        logService.warn(spEl, e);
+    public static void warn(@Language("spel") String spEl, Throwable e) {
+        getBean().warn(spEl, e);
     }
 
     /**
@@ -95,8 +105,8 @@ public class SystemLogger {
      *
      * @param e 异常
      */
-    public void warn(Throwable e) {
-        logService.warn(e);
+    public static void warn(Throwable e) {
+        getBean().warn(e);
     }
 
     /**
@@ -105,7 +115,7 @@ public class SystemLogger {
      * @param spEl  SpEl表达式
      * @param cause 错误原因
      */
-    public void warn(String spEl, String cause) {
-        logService.warn(spEl, cause);
+    public static void warn(String spEl, String cause) {
+        getBean().warn(spEl, cause);
     }
 }
