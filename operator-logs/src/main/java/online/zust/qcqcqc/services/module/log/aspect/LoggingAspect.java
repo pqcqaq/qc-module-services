@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import online.zust.qcqcqc.services.exception.ServiceException;
 import online.zust.qcqcqc.services.module.log.annotation.OperationLog;
 import online.zust.qcqcqc.services.module.log.entity.OperatorLog;
+import online.zust.qcqcqc.services.module.log.enums.LogLevel;
 import online.zust.qcqcqc.services.module.log.service.LogService;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -77,6 +78,7 @@ public class LoggingAspect {
                 operatorLog.setCause(se.getMessage());
             } else {
                 operatorLog.setCause("未捕获的系统异常信息! --> " + e.getMessage());
+                operatorLog.setLevel(LogLevel.ERROR);
             }
             throwable = e;
         }
