@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class LogServiceImpl extends EnhanceService<OperatorLogMapper, OperatorLog> implements LogService {
     @Override
-    @Async
+    @Async("qc-async")
     public void saveAsync(OperatorLog operatorLog) {
         this.save(operatorLog);
     }
