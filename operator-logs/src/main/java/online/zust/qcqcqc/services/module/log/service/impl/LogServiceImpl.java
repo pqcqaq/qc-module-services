@@ -27,7 +27,7 @@ public class LogServiceImpl extends EnhanceService<OperatorLogMapper, OperatorLo
 
     @Override
     @Async("qc-async")
-    public void saveAnnotationLog(final OperationLog operationLog, final Object[] args, final String[] parameterNames, final Object proceed, OperatorLog operatorLog) {
+    public void saveAnnotationLog(final String metadata, final OperationLog operationLog, final Object[] args, final String[] parameterNames, final Object proceed, OperatorLog operatorLog) {
         // 保存日志
         try {
             // 设置 BeanFactoryResolver，用于解析 SpEL 表达式中的 bean
@@ -53,8 +53,10 @@ public class LogServiceImpl extends EnhanceService<OperatorLogMapper, OperatorLo
             operatorLog.setMsg(result);
         } catch (Exception e) {
             log.error("操作日志SpEL表达式解析异常: {}", e.getMessage());
-            operatorLog.setMsg("生成日志：" + operationLog.value() + "异常，请联系管理员");
+            operatorLog.setMsg("生成日志异常，请联系管理员");
+            operatorLog.setCause("解析异常：" + operationLog.value());
         }
+        operatorLog.setMetadata(metadata);
         this.saveAsync(operatorLog);
     }
 

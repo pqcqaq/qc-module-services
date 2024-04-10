@@ -49,6 +49,13 @@ public class LoggingAspect {
         operatorLog.setLevel(operationLog.level());
 
         final MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+        final String methodName = signature.getMethod().getName();
+
+        // 获取类名
+        final String className = joinPoint.getTarget().getClass().getName();
+
+        // 生成metadata
+        String metadata = className + "." + methodName;
 
         // 方法的参数
         final Object[] args = joinPoint.getArgs();
@@ -73,7 +80,7 @@ public class LoggingAspect {
             }
             throwable = e;
         }
-        logService.saveAnnotationLog(operationLog, args, parameterNames, proceed, operatorLog);
+        logService.saveAnnotationLog(metadata, operationLog, args, parameterNames, proceed, operatorLog);
         return returnOrThrow(throwable, proceed);
     }
 

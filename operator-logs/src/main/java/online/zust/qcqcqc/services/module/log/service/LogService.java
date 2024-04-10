@@ -25,7 +25,7 @@ public interface LogService extends IServiceEnhance<OperatorLog> {
      * @param proceed        方法返回值
      * @param operatorLog    操作日志
      */
-    void saveAnnotationLog(final OperationLog operationLog, final Object[] args, final String[] parameterNames, final Object proceed, OperatorLog operatorLog);
+    void saveAnnotationLog(final String metadata, final OperationLog operationLog, final Object[] args, final String[] parameterNames, final Object proceed, OperatorLog operatorLog);
 
     /**
      * 保存日志

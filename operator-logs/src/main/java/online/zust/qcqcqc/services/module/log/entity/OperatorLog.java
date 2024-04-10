@@ -25,4 +25,5 @@ public class OperatorLog {
     private Long createBy;
     private Boolean success;
     private String cause;
+    private String metadata;
 }

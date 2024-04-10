@@ -6,7 +6,8 @@ CREATE TABLE operator_log
     create_time DATETIME      NOT NULL COMMENT '创建时间',
     create_by   BIGINT COMMENT '操作人',
     success     TINYINT       NOT NULL DEFAULT 0 COMMENT '是否成功',
-    cause       VARCHAR(2047) NOT NULL DEFAULT '' COMMENT '失败原因'
+    cause       VARCHAR(2047) NOT NULL DEFAULT '' COMMENT '失败原因',
+    metadata    varchar(255) COMMENT '日志记录点元数据'
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_general_ci;
