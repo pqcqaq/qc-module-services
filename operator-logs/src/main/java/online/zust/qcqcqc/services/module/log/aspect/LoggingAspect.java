@@ -2,7 +2,6 @@ package online.zust.qcqcqc.services.module.log.aspect;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import online.zust.qcqcqc.services.exception.ServiceException;
 import online.zust.qcqcqc.services.module.log.annotation.OperationLog;
 import online.zust.qcqcqc.services.module.log.entity.OperatorLog;
 import online.zust.qcqcqc.services.module.log.enums.LogLevel;
@@ -67,12 +66,8 @@ public class LoggingAspect {
         } catch (Throwable e) {
             log.error("Error in method: " + joinPoint.getSignature().getName(), e);
             operatorLog.setSuccess(false);
-            if (e instanceof ServiceException se) {
-                operatorLog.setCause(se.getMessage());
-            } else {
-                operatorLog.setCause("未捕获的系统异常信息! --> " + e.getMessage());
-                operatorLog.setLevel(LogLevel.ERROR);
-            }
+            operatorLog.setCause(e.getMessage());
+            operatorLog.setLevel(LogLevel.ERROR);
             throwable = e;
         }
         logService.saveAnnotationLog(operationLog, args, parameterNames, proceed, operatorLog);

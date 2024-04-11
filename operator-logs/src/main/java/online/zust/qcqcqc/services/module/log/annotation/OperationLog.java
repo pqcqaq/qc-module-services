@@ -1,6 +1,7 @@
 package online.zust.qcqcqc.services.module.log.annotation;
 
 import online.zust.qcqcqc.services.module.log.enums.LogLevel;
+
 import java.lang.annotation.*;
 
 /**
@@ -21,7 +22,7 @@ public @interface OperationLog {
     LogLevel level() default LogLevel.INFO;
 
     /**
-     * 日志描述,在{{  }} 中可以使用SpEl表达式
+     * 日志描述,在参数中可以使用SpEl表达式
      *
      * @return 日志描述
      */
@@ -29,6 +30,7 @@ public @interface OperationLog {
 
     /**
      * 是否记录请求参数
+     * SpEl表达式
      *
      * @return 是否记录请求参数
      */
