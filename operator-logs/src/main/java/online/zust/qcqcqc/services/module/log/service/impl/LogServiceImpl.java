@@ -1,5 +1,6 @@
 package online.zust.qcqcqc.services.module.log.service.impl;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import online.zust.qcqcqc.services.module.log.annotation.OperationLog;
 import online.zust.qcqcqc.services.module.log.entity.OperatorLog;
@@ -10,6 +11,9 @@ import online.zust.qcqcqc.services.utils.SpElParser;
 import online.zust.qcqcqc.utils.EnhanceService;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.HashMap;
 
@@ -27,7 +31,7 @@ public class LogServiceImpl extends EnhanceService<OperatorLogMapper, OperatorLo
 
     @Override
     @Async("qc-async")
-    public void saveAnnotationLog(final String metadata, final OperationLog operationLog, final Object[] args, final String[] parameterNames, final Object proceed, OperatorLog operatorLog) {
+    public void saveAnnotationLog(final OperationLog operationLog, final Object[] args, final String[] parameterNames, final Object proceed, OperatorLog operatorLog) {
         // 保存日志
         try {
             // 设置 BeanFactoryResolver，用于解析 SpEL 表达式中的 bean
@@ -56,12 +60,28 @@ public class LogServiceImpl extends EnhanceService<OperatorLogMapper, OperatorLo
             operatorLog.setMsg("生成日志异常，请联系管理员");
             operatorLog.setCause("解析异常：" + operationLog.value());
         }
-        operatorLog.setMetadata(metadata);
+        operatorLog.setMetadata(getMetadata());
         this.saveAsync(operatorLog);
     }
 
     private String getMsg(String spEl) {
         return SpElParser.parseExpression(spEl, new HashMap<>(0), String.class);
+    }
+
+    private String getMetadata() {
+        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+        if (requestAttributes == null) {
+            return "NO REQUEST INFO";
+        }
+        HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
+        // 获取请求的接口地址
+        String requestUri = request.getRequestURI();
+        // 获取请求的方法
+        String method = request.getMethod();
+        // 获取请求的参数
+        String queryString = request.getQueryString();
+        // 返回请求的接口地址、方法、参数
+        return "请求地址：" + requestUri + "，请求方法：" + method + "，请求参数：" + queryString;
     }
 
     @Override
@@ -72,6 +92,7 @@ public class LogServiceImpl extends EnhanceService<OperatorLogMapper, OperatorLo
         operatorLog.setMsg(getMsg(spEl));
         operatorLog.setSuccess(true);
         operatorLog.setCause("无");
+        operatorLog.setMetadata(getMetadata());
         this.saveAsync(operatorLog);
     }
 
@@ -83,6 +104,7 @@ public class LogServiceImpl extends EnhanceService<OperatorLogMapper, OperatorLo
         operatorLog.setMsg(getMsg(spEl));
         operatorLog.setSuccess(false);
         operatorLog.setCause("无");
+        operatorLog.setMetadata(getMetadata());
         this.saveAsync(operatorLog);
     }
 
@@ -94,6 +116,7 @@ public class LogServiceImpl extends EnhanceService<OperatorLogMapper, OperatorLo
         operatorLog.setMsg(getMsg(spEl));
         operatorLog.setSuccess(false);
         operatorLog.setCause(e.getMessage());
+        operatorLog.setMetadata(getMetadata());
         this.saveAsync(operatorLog);
     }
 
@@ -105,6 +128,7 @@ public class LogServiceImpl extends EnhanceService<OperatorLogMapper, OperatorLo
         operatorLog.setMsg(e.getMessage());
         operatorLog.setSuccess(false);
         operatorLog.setCause(e.getCause().getMessage());
+        operatorLog.setMetadata(getMetadata());
         this.saveAsync(operatorLog);
     }
 
@@ -116,6 +140,7 @@ public class LogServiceImpl extends EnhanceService<OperatorLogMapper, OperatorLo
         operatorLog.setMsg(getMsg(spEl));
         operatorLog.setSuccess(false);
         operatorLog.setCause(cause);
+        operatorLog.setMetadata(getMetadata());
         this.saveAsync(operatorLog);
     }
 
@@ -127,6 +152,7 @@ public class LogServiceImpl extends EnhanceService<OperatorLogMapper, OperatorLo
         operatorLog.setMsg(getMsg(spEl));
         operatorLog.setSuccess(true);
         operatorLog.setCause("无");
+        operatorLog.setMetadata(getMetadata());
         this.saveAsync(operatorLog);
     }
 
@@ -138,6 +164,7 @@ public class LogServiceImpl extends EnhanceService<OperatorLogMapper, OperatorLo
         operatorLog.setMsg(getMsg(spEl));
         operatorLog.setSuccess(true);
         operatorLog.setCause("无");
+        operatorLog.setMetadata(getMetadata());
         this.saveAsync(operatorLog);
     }
 
@@ -149,6 +176,7 @@ public class LogServiceImpl extends EnhanceService<OperatorLogMapper, OperatorLo
         operatorLog.setMsg(getMsg(spEl));
         operatorLog.setSuccess(false);
         operatorLog.setCause(e.getMessage());
+        operatorLog.setMetadata(getMetadata());
         this.saveAsync(operatorLog);
     }
 
@@ -160,6 +188,7 @@ public class LogServiceImpl extends EnhanceService<OperatorLogMapper, OperatorLo
         operatorLog.setMsg(e.getMessage());
         operatorLog.setSuccess(false);
         operatorLog.setCause(e.getCause().getMessage());
+        operatorLog.setMetadata(getMetadata());
         this.saveAsync(operatorLog);
     }
 
@@ -171,6 +200,7 @@ public class LogServiceImpl extends EnhanceService<OperatorLogMapper, OperatorLo
         operatorLog.setMsg(getMsg(spEl));
         operatorLog.setSuccess(false);
         operatorLog.setCause(cause);
+        operatorLog.setMetadata(getMetadata());
         this.saveAsync(operatorLog);
     }
 }

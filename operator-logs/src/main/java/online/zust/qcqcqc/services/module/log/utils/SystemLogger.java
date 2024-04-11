@@ -18,7 +18,7 @@ public class SystemLogger {
     private static LogService logService;
 
     @NotNull
-    private static LogService getBean() {
+    private static LogService getLoggerService() {
         if (logService == null) {
             logService = ProxyUtil.getBean(LogService.class);
         }
@@ -31,7 +31,7 @@ public class SystemLogger {
      * @param spEl SpEl表达式
      */
     public static void info(@Language("spel") String spEl) {
-        getBean().info(spEl);
+        getLoggerService().info(spEl);
     }
 
     /**
@@ -40,7 +40,7 @@ public class SystemLogger {
      * @param spEl SpEl表达式
      */
     public static void error(@Language("spel") String spEl) {
-        getBean().error(spEl);
+        getLoggerService().error(spEl);
     }
 
     /**
@@ -50,7 +50,7 @@ public class SystemLogger {
      * @param e    异常
      */
     public static void error(@Language("spel") String spEl, Throwable e) {
-        getBean().error(spEl, e);
+        getLoggerService().error(spEl, e);
     }
 
     /**
@@ -59,7 +59,7 @@ public class SystemLogger {
      * @param e 异常
      */
     public static void error(Throwable e) {
-        getBean().error(e);
+        getLoggerService().error(e);
     }
 
     /**
@@ -69,7 +69,7 @@ public class SystemLogger {
      * @param cause 错误原因
      */
     public static void error(String spEl, String cause) {
-        getBean().error(spEl, cause);
+        getLoggerService().error(spEl, cause);
     }
 
     /**
@@ -78,7 +78,7 @@ public class SystemLogger {
      * @param spEl SpEl表达式
      */
     public static void debug(@Language("spel") String spEl) {
-        getBean().debug(spEl);
+        getLoggerService().debug(spEl);
     }
 
     /**
@@ -87,7 +87,7 @@ public class SystemLogger {
      * @param spEl SpEl表达式
      */
     public static void warn(@Language("spel") String spEl) {
-        getBean().warn(spEl);
+        getLoggerService().warn(spEl);
     }
 
     /**
@@ -97,7 +97,7 @@ public class SystemLogger {
      * @param e    异常
      */
     public static void warn(@Language("spel") String spEl, Throwable e) {
-        getBean().warn(spEl, e);
+        getLoggerService().warn(spEl, e);
     }
 
     /**
@@ -106,7 +106,7 @@ public class SystemLogger {
      * @param e 异常
      */
     public static void warn(Throwable e) {
-        getBean().warn(e);
+        getLoggerService().warn(e);
     }
 
     /**
@@ -116,6 +116,6 @@ public class SystemLogger {
      * @param cause 错误原因
      */
     public static void warn(String spEl, String cause) {
-        getBean().warn(spEl, cause);
+        getLoggerService().warn(spEl, cause);
     }
 }
