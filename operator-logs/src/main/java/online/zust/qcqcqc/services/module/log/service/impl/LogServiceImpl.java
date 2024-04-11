@@ -1,8 +1,11 @@
 package online.zust.qcqcqc.services.module.log.service.impl;
 
-import jakarta.servlet.http.HttpServletRequest;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import online.zust.qcqcqc.services.module.log.annotation.OperationLog;
+import online.zust.qcqcqc.services.module.log.common.MetadataAppender;
 import online.zust.qcqcqc.services.module.log.entity.OperatorLog;
 import online.zust.qcqcqc.services.module.log.enums.LogLevel;
 import online.zust.qcqcqc.services.module.log.mapper.OperatorLogMapper;
@@ -11,18 +14,22 @@ import online.zust.qcqcqc.services.utils.SpElParser;
 import online.zust.qcqcqc.utils.EnhanceService;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author qcqcqc
  */
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class LogServiceImpl extends EnhanceService<OperatorLogMapper, OperatorLog> implements LogService {
+
+    private final List<MetadataAppender> metadataAppenders;
+    private final ObjectMapper objectMapper;
+
     @Override
     @Async("qc-async")
     public void saveAsync(OperatorLog operatorLog) {
@@ -68,20 +75,17 @@ public class LogServiceImpl extends EnhanceService<OperatorLogMapper, OperatorLo
         return SpElParser.parseExpression(spEl, new HashMap<>(0), String.class);
     }
 
-    private String getMetadata() {
-        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
-        if (requestAttributes == null) {
-            return "NO REQUEST INFO";
+    public String getMetadata() {
+        Map<String, String> metadataMap = new HashMap<>(metadataAppenders.size());
+        for (MetadataAppender metadataAppender : metadataAppenders) {
+            metadataMap.put(metadataAppender.getClass().getSimpleName(), metadataAppender.appendMetadata());
         }
-        HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
-        // 获取请求的接口地址
-        String requestUri = request.getRequestURI();
-        // 获取请求的方法
-        String method = request.getMethod();
-        // 获取请求的参数
-        String queryString = request.getQueryString();
-        // 返回请求的接口地址、方法、参数
-        return "请求地址：" + requestUri + "，请求方法：" + method + "，请求参数：" + queryString;
+        try {
+            return objectMapper.writeValueAsString(metadataMap);
+        } catch (JsonProcessingException e) {
+            log.error("Metadata解析异常: {}", e.getMessage());
+            return "{}";
+        }
     }
 
     @Override
