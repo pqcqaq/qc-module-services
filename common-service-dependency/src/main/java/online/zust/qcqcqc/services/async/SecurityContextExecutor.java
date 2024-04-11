@@ -6,8 +6,8 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 /**
  * @author qcqcqc
@@ -26,11 +26,12 @@ public class SecurityContextExecutor implements TaskExecutor {
 
     @Override
     public void execute(@NotNull Runnable task) {
+        // 设置线程共享SecurityContext与RequestAttributes
         SecurityContext context = SecurityContextHolder.getContext();
-        RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
+        ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         executor.execute(() -> {
             SecurityContextHolder.setContext(context);
-            RequestContextHolder.setRequestAttributes(requestAttributes);
+            RequestContextHolder.setRequestAttributes(sra);
             try {
                 task.run();
             } catch (Exception e) {
