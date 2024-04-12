@@ -55,7 +55,7 @@ public class DebugLogInterceptor implements HandlerInterceptor {
         OperatorLog operatorLog = new OperatorLog();
         Map<String, String> stringStringMap = operatorLogMetadataThreadLocal.get();
         stringStringMap.put("afterCompletion", ex == null ? "success" : "error:" + ex.getMessage());
-        operatorLog.setMsg("[DEBUG-LOG]--->" + request.getRequestURI() + " : " + request.getMethod() + " : " + request.getRemoteAddr() + " : " + request.getRemotePort() + " : " + request.getRemoteUser() + " : " + request.getRemoteHost());
+        operatorLog.setMsg("[DEBUG-LOG]--->" + request.getMethod() + " : " + request.getRequestURI() + " @ " + request.getRemoteAddr() + ":" + request.getRemotePort());
         // 将map转为json
         operatorLog.setMetadata(objectMapper.writeValueAsString(stringStringMap));
         operatorLog.setLevel(LogLevel.DEBUG);
