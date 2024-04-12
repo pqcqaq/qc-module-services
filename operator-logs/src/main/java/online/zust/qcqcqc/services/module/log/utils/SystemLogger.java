@@ -1,5 +1,6 @@
 package online.zust.qcqcqc.services.module.log.utils;
 
+import online.zust.qcqcqc.services.module.log.entity.OperatorLog;
 import online.zust.qcqcqc.services.module.log.service.LogService;
 import online.zust.qcqcqc.utils.utils.ProxyUtil;
 import org.intellij.lang.annotations.Language;
@@ -23,6 +24,15 @@ public class SystemLogger {
             logService = ProxyUtil.getBean(LogService.class);
         }
         return logService;
+    }
+
+    /**
+     * 手动保存日志
+     *
+     * @param operatorLog 操作日志
+     */
+    public static void saveLog(OperatorLog operatorLog) {
+        getLoggerService().saveAsync(operatorLog);
     }
 
     /**

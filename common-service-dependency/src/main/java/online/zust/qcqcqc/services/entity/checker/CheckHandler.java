@@ -1,12 +1,14 @@
 package online.zust.qcqcqc.services.entity.checker;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import online.zust.qcqcqc.services.exception.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * @author qcqcqc
@@ -19,21 +21,19 @@ public class CheckHandler {
     /**
      * 依赖检查器
      */
-    private static List<DependencyChecker> dependencyCheckers;
+    private static Map<Class<? extends DependencyChecker>, DependencyChecker> dependencyCheckers;
 
     @Autowired
     public void setDependencyCheckers(List<DependencyChecker> dependencyCheckers) {
-        CheckHandler.dependencyCheckers = dependencyCheckers;
+        CheckHandler.dependencyCheckers = dependencyCheckers.stream().collect(Collectors.toMap(DependencyChecker::getClass, Function.identity()));
         log.info("依赖检查器加载完成: {}", dependencyCheckers);
     }
 
     public static DependencyChecker getChecker(Class<? extends DependencyChecker> checker) {
-        for (DependencyChecker dependencyChecker : dependencyCheckers) {
-            if (dependencyChecker.getClass().equals(checker)) {
-                return dependencyChecker;
-            }
+        if (dependencyCheckers.containsKey(checker)) {
+            return dependencyCheckers.get(checker);
         }
-        throw new ServiceException("未找到对应的依赖检查器");
+        throw new ServiceException("未找到依赖检查器: " + checker.getCanonicalName());
     }
 
     public static <T extends DependencyChecker> void doCheck(Class<T> checker, Long id) {
