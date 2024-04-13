@@ -66,7 +66,7 @@ public interface RedisService {
      *
      * @param key 键
      */
-    void delete(String key);
+    boolean delete(String key);
 
 
     /**
@@ -179,6 +179,7 @@ public interface RedisService {
 
     /**
      * 获取过期时间
+     *
      * @param key 键
      * @return 过期时间
      */
@@ -186,6 +187,7 @@ public interface RedisService {
 
     /**
      * 获取过期时间的时间毫秒值
+     *
      * @param key 键
      * @return 过期时间的毫秒值
      */
