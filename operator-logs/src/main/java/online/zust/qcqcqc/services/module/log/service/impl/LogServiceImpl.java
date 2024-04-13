@@ -78,7 +78,7 @@ public class LogServiceImpl extends EnhanceService<OperatorLogMapper, OperatorLo
     public String getMetadata() {
         Map<String, String> metadataMap = new HashMap<>(metadataAppenders.size());
         for (MetadataAppender metadataAppender : metadataAppenders) {
-            metadataMap.put(metadataAppender.getClass().getSimpleName(), metadataAppender.appendMetadata());
+            metadataMap.put(metadataAppender.getKey(), metadataAppender.appendMetadata());
         }
         try {
             return objectMapper.writeValueAsString(metadataMap);
