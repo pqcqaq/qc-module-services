@@ -67,7 +67,7 @@ public class LoggingAspect {
             log.error("Error in method: " + joinPoint.getSignature().getName(), e);
             operatorLog.setSuccess(false);
             operatorLog.setCause(e.getMessage());
-            operatorLog.setLevel(LogLevel.ERROR);
+            operatorLog.setLevel(LogLevel.WARN);
             throwable = e;
         }
         logService.saveAnnotationLog(operationLog, args, parameterNames, proceed, operatorLog);
