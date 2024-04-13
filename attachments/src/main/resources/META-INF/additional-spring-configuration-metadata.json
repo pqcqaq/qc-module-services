@@ -1,0 +1,67 @@
+{
+  "groups": [],
+  "properties": [
+    {
+      "name": "storage.type",
+      "type": "java.lang.String",
+      "description": "文件存储方式.",
+      "defaultValue": "local"
+    },
+    {
+      "name": "storage.local.path",
+      "type": "java.lang.String",
+      "description": "本地存储路径.",
+      "defaultValue": "/tmp"
+    },
+    {
+      "name": "storage.local.public",
+      "type": "java.lang.String",
+      "description": "外部访问路径.",
+      "defaultValue": "http://localhost/tmp"
+    },
+    {
+      "name": "storage.minio.endpoint",
+      "type": "java.lang.String",
+      "description": "minio服务地址.",
+      "defaultValue": "http://localhost:9000"
+    },
+    {
+      "name": "storage.minio.public-url",
+      "type": "java.lang.String",
+      "description": "外部访问路径.",
+      "defaultValue": "http://localhost:9001"
+    },
+    {
+      "name": "storage.minio.accessKey",
+      "type": "java.lang.String",
+      "description": "minio服务访问key."
+    },
+    {
+      "name": "storage.minio.secretKey",
+      "type": "java.lang.String",
+      "description": "minio服务访问secret."
+    },
+    {
+      "name": "storage.minio.bucketName",
+      "type": "java.lang.String",
+
+      "description": "minio服务存储桶.",
+      "defaultValue": "default"
+    }
+  ],
+  "hits": [
+    {
+      "name": "storage.type",
+      "values": [
+        {
+          "value": "local",
+          "description": "在本地存储文件."
+        },
+        {
+          "value": "minio",
+          "description": "在minio存储文件."
+        }
+      ]
+    }
+  ]
+}

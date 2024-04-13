@@ -22,7 +22,7 @@ import java.nio.file.Paths;
  */
 @Component
 @Slf4j
-@ConditionalOnProperty(name = "storage.type", havingValue = "local")
+@ConditionalOnProperty(prefix = "storage", name = "type", havingValue = "local")
 public class LocalStorageHandler implements AttachmentsStorageHandler {
     static {
         log.info("正在使用本地存储，请确保本地存储路径正确，并手动配置外部链接地址");

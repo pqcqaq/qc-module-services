@@ -1,0 +1,11 @@
+storage:
+  type: local
+  local:
+    path: D:\upload
+    public: http://test-static.zust.online:8050/
+  minio:
+    endpoint: http://124.221.214.194:9000
+    public-url: http://124.221.214.194:9000
+    accessKey: minio
+    secretKey: minio123
+    bucketName: whitehorse

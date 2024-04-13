@@ -1,0 +1,26 @@
+{
+  "groups": [],
+  "properties": [
+    {
+      "name": "services.log.debug",
+      "type": "java.lang.Boolean",
+      "value": "false",
+      "description": "是否启用Debug日志."
+    }
+  ],
+  "hints": [
+    {
+      "name": "services.log.debug",
+      "values": [
+        {
+          "value": "true",
+          "description": "启用Debug日志."
+        },
+        {
+          "value": "false",
+          "description": "禁用Debug日志."
+        }
+      ]
+    }
+  ]
+}

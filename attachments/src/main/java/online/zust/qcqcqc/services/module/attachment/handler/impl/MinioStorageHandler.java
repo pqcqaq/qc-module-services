@@ -35,7 +35,7 @@ import java.util.List;
  * Time: 23:17
  */
 @Component
-@ConditionalOnProperty(name = "storage.type", havingValue = "minio")
+@ConditionalOnProperty(prefix = "storage", name = "type", havingValue = "minio")
 @RequiredArgsConstructor
 @Slf4j
 public class MinioStorageHandler implements AttachmentsStorageHandler {
