@@ -64,7 +64,7 @@ public class LoggingAspect {
             operatorLog.setSuccess(true);
             operatorLog.setCause("无异常信息");
         } catch (Throwable e) {
-            log.error("Error in method: " + joinPoint.getSignature().getName(), e);
+            log.error("Error in method: " + joinPoint.getSignature().getName(), e.getMessage());
             operatorLog.setSuccess(false);
             operatorLog.setCause(e.getMessage());
             operatorLog.setLevel(LogLevel.WARN);
