@@ -12,6 +12,7 @@
     <modules>
         <module>operator-logs</module>
         <module>attachments</module>
+        <module>redis-service</module>
     </modules>
 
     <parent>

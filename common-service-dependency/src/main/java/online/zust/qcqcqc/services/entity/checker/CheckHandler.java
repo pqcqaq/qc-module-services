@@ -23,8 +23,12 @@ public class CheckHandler {
      */
     private static Map<Class<? extends DependencyChecker>, DependencyChecker> dependencyCheckers;
 
-    @Autowired
+    @Autowired(required = false)
     public void setDependencyCheckers(List<DependencyChecker> dependencyCheckers) {
+        if (dependencyCheckers == null || dependencyCheckers.isEmpty()) {
+            log.info("未定义自定义的依赖检查器");
+            return;
+        }
         CheckHandler.dependencyCheckers = dependencyCheckers.stream().collect(Collectors.toMap(DependencyChecker::getClass, Function.identity()));
         log.info("依赖检查器加载完成: {}", dependencyCheckers);
     }
