@@ -39,9 +39,9 @@ public class RedisHashMap<T> {
      */
     public RedisHashMap(String key, Class<T> clazz) {
         this.key = key;
-        syncFromRedis();
         timeoutAt = getRedisService().getTimeoutAt(this.key);
         valueType = clazz;
+        syncFromRedis();
     }
 
     /**
