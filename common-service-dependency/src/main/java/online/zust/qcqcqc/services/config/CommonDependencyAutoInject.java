@@ -15,7 +15,8 @@ import org.springframework.context.annotation.Import;
 @Import({
         AsyncConfig.class,
         SpElParser.class,
-        CheckHandler.class
+        CheckHandler.class,
+        MbpMetaObjectHandler.class
 })
 public class CommonDependencyAutoInject {
 }
