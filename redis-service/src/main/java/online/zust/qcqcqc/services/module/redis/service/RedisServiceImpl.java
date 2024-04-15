@@ -198,8 +198,8 @@ public class RedisServiceImpl implements RedisService {
     @Override
     public long getTimeoutAt(String key) {
         long expire = getExpire(key);
-        if (expire < 0) {
-            return -1;
+        if (expire <= 0) {
+            return expire;
         }
         return expire + System.currentTimeMillis();
     }

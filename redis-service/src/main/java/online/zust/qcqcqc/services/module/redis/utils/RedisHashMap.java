@@ -161,7 +161,7 @@ public class RedisHashMap<T> {
      * @return 是否过期
      */
     public boolean isExpired() {
-        if (timeoutAt == -1) {
+        if (timeoutAt <= 0) {
             return false;
         }
         return System.currentTimeMillis() > timeoutAt;
