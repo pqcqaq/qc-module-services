@@ -28,6 +28,7 @@ public class MbpMetaObjectHandler implements MetaObjectHandler {
 
         // 设置创建人
         this.setFieldValByName("createBy", currentUserGetter.getCurrentUser(), metaObject);
+        this.setFieldValByName("updateBy", currentUserGetter.getCurrentUser(), metaObject);
         // logic
         this.setFieldValByName("deleted", false, metaObject);
         this.setFieldValByName("sequence", System.currentTimeMillis(), metaObject);
