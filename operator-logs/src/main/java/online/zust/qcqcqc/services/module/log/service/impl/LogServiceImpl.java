@@ -1,5 +1,6 @@
 package online.zust.qcqcqc.services.module.log.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -131,7 +132,11 @@ public class LogServiceImpl extends EnhanceService<OperatorLogMapper, OperatorLo
         operatorLog.setLevel(LogLevel.ERROR);
         operatorLog.setMsg(e.getMessage());
         operatorLog.setSuccess(false);
-        operatorLog.setCause(e.getCause().getMessage());
+        Throwable cause = e.getCause();
+        if (cause == null) {
+            cause = e;
+        }
+        operatorLog.setCause(cause.getMessage());
         operatorLog.setMetadata(getMetadata());
         this.saveAsync(operatorLog);
     }
@@ -206,5 +211,18 @@ public class LogServiceImpl extends EnhanceService<OperatorLogMapper, OperatorLo
         operatorLog.setCause(cause);
         operatorLog.setMetadata(getMetadata());
         this.saveAsync(operatorLog);
+    }
+
+    @Override
+    public List<String> getMetadataKeys() {
+        return metadataAppenders.stream().map(MetadataAppender::getKey).toList();
+    }
+
+    @Override
+    public QueryWrapper<OperatorLog> getMetadataFuzzyQueryWrapper(String key, String value) {
+        QueryWrapper<OperatorLog> operatorLogQueryWrapper = new QueryWrapper<>();
+        // 利用mysql8的json数据格式匹配
+        operatorLogQueryWrapper.last("AND metadata ->> '$." + key + "' LIKE '%" + value + "%'");
+        return operatorLogQueryWrapper;
     }
 }

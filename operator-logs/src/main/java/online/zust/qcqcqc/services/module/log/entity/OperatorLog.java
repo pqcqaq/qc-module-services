@@ -27,6 +27,6 @@ public class OperatorLog extends BaseEntity {
     private Boolean success;
     @ColumnType(type = DataType.Varchar, length = 1023, comment = "失败原因")
     private String cause;
-    @ColumnType(type = DataType.Varchar, length = 2047, comment = "元数据", nullable = false)
+    @ColumnType(type = DataType.Json, length = 2047, comment = "元数据", nullable = false)
     private String metadata;
 }

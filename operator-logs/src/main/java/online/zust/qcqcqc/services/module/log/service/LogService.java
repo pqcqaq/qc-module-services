@@ -1,9 +1,12 @@
 package online.zust.qcqcqc.services.module.log.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import online.zust.qcqcqc.services.module.log.annotation.OperationLog;
 import online.zust.qcqcqc.services.module.log.entity.OperatorLog;
 import online.zust.qcqcqc.utils.IServiceEnhance;
 import org.intellij.lang.annotations.Language;
+
+import java.util.List;
 
 /**
  * @author qcqcqc
@@ -101,4 +104,19 @@ public interface LogService extends IServiceEnhance<OperatorLog> {
      */
     void warn(String spEl, String cause);
 
+    /**
+     * 获取元数据的key
+     *
+     * @return 元数据
+     */
+    List<String> getMetadataKeys();
+
+    /**
+     * 获取元数据的模糊查询条件
+     *
+     * @param key   元数据key
+     * @param value 元数据value
+     * @return 查询条件
+     */
+    QueryWrapper<OperatorLog> getMetadataFuzzyQueryWrapper(String key, String value);
 }
