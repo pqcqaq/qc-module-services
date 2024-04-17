@@ -1,9 +1,4 @@
-package online.zust.qcqcqc.services.module.redis.service;/*
- *文件名: RedisServiceImpl
- *创建者: myy
- *创建时间:2024/2/20 19:57
- *描述: 这是一个示例
- */
+package online.zust.qcqcqc.services.module.redis.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -19,7 +14,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author myy
+ * @author qcqcqc
  */
 @Service
 @RequiredArgsConstructor
