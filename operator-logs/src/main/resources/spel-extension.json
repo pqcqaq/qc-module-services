@@ -1,7 +1,5 @@
 {
   "online.zust.qcqcqc.services.module.log.annotation.OperationLog@value": {
-    "prefix": "{{",
-    "suffix": "}}",
     "method": {
       "result": true,
       "resultName": "returnValue",
