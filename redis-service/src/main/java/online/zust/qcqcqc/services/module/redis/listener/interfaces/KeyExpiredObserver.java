@@ -8,7 +8,7 @@ import org.springframework.data.redis.connection.Message;
  * Date: 2024/4/13
  * Time: 20:36
  */
-public interface KeyExpiredListener {
+public interface KeyExpiredObserver {
     /**
      * 需要监听的key
      *

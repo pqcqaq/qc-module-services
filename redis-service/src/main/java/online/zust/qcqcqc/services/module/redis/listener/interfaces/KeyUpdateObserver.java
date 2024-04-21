@@ -8,7 +8,7 @@ import org.springframework.data.redis.connection.Message;
  * Date: 2024/4/13
  * Time: 20:42
  */
-public interface KeyDeleteListener {
+public interface KeyUpdateObserver {
     /**
      * 需要监听的key
      *
@@ -20,7 +20,7 @@ public interface KeyDeleteListener {
     }
 
     /**
-     * 删除key监听
+     * 更新key监听
      *
      * @param message 消息
      * @param pattern 模式

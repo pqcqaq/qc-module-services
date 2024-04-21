@@ -1,8 +1,8 @@
 package online.zust.qcqcqc.services.module.redis.config;
 
-import online.zust.qcqcqc.services.module.redis.listener.QcKeyDeletePublisher;
-import online.zust.qcqcqc.services.module.redis.listener.QcKeyExpiredPublisher;
-import online.zust.qcqcqc.services.module.redis.listener.QcKeyUpdatePublisher;
+import online.zust.qcqcqc.services.module.redis.listener.QcKeyDeleteEvent;
+import online.zust.qcqcqc.services.module.redis.listener.QcKeyExpiredEvent;
+import online.zust.qcqcqc.services.module.redis.listener.QcKeyUpdateEvent;
 import online.zust.qcqcqc.services.module.redis.service.RedisServiceImpl;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -16,9 +16,9 @@ import org.springframework.context.annotation.Import;
 @Import({
         RedisConfiguration.class,
         RedisServiceImpl.class,
-        QcKeyDeletePublisher.class,
-        QcKeyExpiredPublisher.class,
-        QcKeyUpdatePublisher.class
+        QcKeyDeleteEvent.class,
+        QcKeyExpiredEvent.class,
+        QcKeyUpdateEvent.class
 })
 public class RedisServiceAutoInject {
 }

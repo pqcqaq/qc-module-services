@@ -1,11 +1,10 @@
 package online.zust.qcqcqc.services.module.redis.listener;
 
 import lombok.extern.slf4j.Slf4j;
-import online.zust.qcqcqc.services.module.redis.listener.interfaces.KeyExpiredListener;
+import online.zust.qcqcqc.services.module.redis.listener.interfaces.KeyDeleteObserver;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.Message;
-import org.springframework.data.redis.listener.KeyExpirationEventMessageListener;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.stereotype.Component;
 
@@ -13,19 +12,21 @@ import java.util.List;
 
 /**
  * @author qcqcqc
+ * Date: 2024/4/13
+ * Time: 20:35
  */
 @Component
 @Slf4j
-public class QcKeyExpiredPublisher extends KeyExpirationEventMessageListener {
+public class QcKeyDeleteEvent extends KeyDeleteEventMessageListener {
 
-    private List<KeyExpiredListener> listeners;
+    private List<KeyDeleteObserver> listeners;
 
     @Autowired(required = false)
-    public void setListeners(List<KeyExpiredListener> listeners) {
+    public void setListeners(List<KeyDeleteObserver> listeners) {
         this.listeners = listeners;
     }
 
-    public QcKeyExpiredPublisher(RedisMessageListenerContainer listenerContainer) {
+    public QcKeyDeleteEvent(RedisMessageListenerContainer listenerContainer) {
         super(listenerContainer);
     }
 
@@ -45,7 +46,7 @@ public class QcKeyExpiredPublisher extends KeyExpirationEventMessageListener {
                     // 如果没有正则表达式，就直接运行
                     listener.onMessage(message, pattern);
                 } catch (Exception e) {
-                    log.error("KeyExpiredListener error", e);
+                    log.error("KeyDeleteListener error", e);
                 }
             });
         }

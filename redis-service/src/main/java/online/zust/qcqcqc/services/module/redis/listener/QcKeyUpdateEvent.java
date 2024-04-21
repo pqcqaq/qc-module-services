@@ -1,7 +1,7 @@
 package online.zust.qcqcqc.services.module.redis.listener;
 
 import lombok.extern.slf4j.Slf4j;
-import online.zust.qcqcqc.services.module.redis.listener.interfaces.KeyDeleteListener;
+import online.zust.qcqcqc.services.module.redis.listener.interfaces.KeyUpdateObserver;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.Message;
@@ -12,21 +12,19 @@ import java.util.List;
 
 /**
  * @author qcqcqc
- * Date: 2024/4/13
- * Time: 20:35
  */
 @Component
 @Slf4j
-public class QcKeyDeletePublisher extends KeyDeleteEventMessageListener {
+public class QcKeyUpdateEvent extends KeyUpdateEventMessageListener {
 
-    private List<KeyDeleteListener> listeners;
+    private List<KeyUpdateObserver> listeners;
 
     @Autowired(required = false)
-    public void setListeners(List<KeyDeleteListener> listeners) {
+    public void setListeners(List<KeyUpdateObserver> listeners) {
         this.listeners = listeners;
     }
 
-    public QcKeyDeletePublisher(RedisMessageListenerContainer listenerContainer) {
+    public QcKeyUpdateEvent(RedisMessageListenerContainer listenerContainer) {
         super(listenerContainer);
     }
 
@@ -46,7 +44,7 @@ public class QcKeyDeletePublisher extends KeyDeleteEventMessageListener {
                     // 如果没有正则表达式，就直接运行
                     listener.onMessage(message, pattern);
                 } catch (Exception e) {
-                    log.error("KeyDeleteListener error", e);
+                    log.error("KeyUpdateListener error", e);
                 }
             });
         }
