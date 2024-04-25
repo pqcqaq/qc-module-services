@@ -13,6 +13,7 @@
         <module>operator-logs</module>
         <module>attachments</module>
         <module>redis-service</module>
+        <module>dynamic-cron-tasks</module>
     </modules>
 
     <parent>
