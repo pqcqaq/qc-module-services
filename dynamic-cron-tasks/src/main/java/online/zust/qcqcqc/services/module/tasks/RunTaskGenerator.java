@@ -69,7 +69,7 @@ public class RunTaskGenerator {
      */
     private static Runnable parseGroovyTask(DynamicCronTask task) {
         return () -> {
-            getDynamicTaskService().setStarted(task.getId(), true);
+            getDynamicTaskService().setRunning(task.getId(), true);
             try {
                 SystemLogger.info("'Groovy脚本任务开始执行:" + task.getTaskName() + "'");
                 // TODO: 2024/4/25 执行Groovy脚本
@@ -78,7 +78,7 @@ public class RunTaskGenerator {
                 SystemLogger.error("'Groovy脚本任务执行失败:" + task.getTaskName() + "'", e);
                 getDynamicTaskService().setSuccess(task.getId(), false);
             } finally {
-                getDynamicTaskService().setStarted(task.getId(), false);
+                getDynamicTaskService().setRunning(task.getId(), false);
             }
         };
     }
@@ -91,7 +91,7 @@ public class RunTaskGenerator {
      */
     private static Runnable parseJavaScriptTask(DynamicCronTask task) {
         return () -> {
-            getDynamicTaskService().setStarted(task.getId(), true);
+            getDynamicTaskService().setRunning(task.getId(), true);
             try {
                 SystemLogger.info("'JavaScript脚本任务开始执行:" + task.getTaskName() + "'");
                 // TODO: 2024/4/25 执行JavaScript脚本
@@ -100,7 +100,7 @@ public class RunTaskGenerator {
                 SystemLogger.error("'JavaScript脚本任务执行失败:" + task.getTaskName() + "'", e);
                 getDynamicTaskService().setSuccess(task.getId(), false);
             } finally {
-                getDynamicTaskService().setStarted(task.getId(), false);
+                getDynamicTaskService().setRunning(task.getId(), false);
             }
         };
     }
@@ -113,7 +113,7 @@ public class RunTaskGenerator {
      */
     private static Runnable parsePythonTask(DynamicCronTask task) {
         return () -> {
-            getDynamicTaskService().setStarted(task.getId(), true);
+            getDynamicTaskService().setRunning(task.getId(), true);
             try {
                 SystemLogger.info("'Python脚本任务开始执行:" + task.getTaskName() + "'");
                 // TODO: 2024/4/25 执行Python脚本
@@ -122,7 +122,7 @@ public class RunTaskGenerator {
                 SystemLogger.error("'Python脚本任务执行失败:" + task.getTaskName() + "'", e);
                 getDynamicTaskService().setSuccess(task.getId(), false);
             } finally {
-                getDynamicTaskService().setStarted(task.getId(), false);
+                getDynamicTaskService().setRunning(task.getId(), false);
             }
         };
     }
@@ -135,7 +135,7 @@ public class RunTaskGenerator {
      */
     private static Runnable parseShellTask(DynamicCronTask task) {
         return () -> {
-            getDynamicTaskService().setStarted(task.getId(), true);
+            getDynamicTaskService().setRunning(task.getId(), true);
             try {
                 SystemLogger.info("'Shell脚本任务开始执行:" + task.getTaskName() + "'");
                 // TODO: 2024/4/25 执行Shell脚本
@@ -144,7 +144,7 @@ public class RunTaskGenerator {
                 SystemLogger.error("'Shell脚本任务执行失败:" + task.getTaskName() + "'", e);
                 getDynamicTaskService().setSuccess(task.getId(), false);
             } finally {
-                getDynamicTaskService().setStarted(task.getId(), false);
+                getDynamicTaskService().setRunning(task.getId(), false);
             }
         };
     }
@@ -156,17 +156,18 @@ public class RunTaskGenerator {
      * @return Runnable
      */
     private static Runnable parseSpelTask(DynamicCronTask task) {
+        String spelTaskMetadata = getDynamicTaskService().getSpelTaskMetadata(task);
         return () -> {
-            getDynamicTaskService().setStarted(task.getId(), true);
+            getDynamicTaskService().setRunning(task.getId(), true);
             try {
                 SystemLogger.info("'Spel表达式任务开始执行:" + task.getTaskName() + "'");
-                SpElParser.parseExpression(getDynamicTaskService().getSpelTaskMetadata(task), new HashMap<>(0), String.class);
+                SpElParser.parseExpression(spelTaskMetadata, new HashMap<>(0), String.class);
                 getDynamicTaskService().setSuccess(task.getId(), true);
             } catch (Exception e) {
                 SystemLogger.error("'Spel表达式任务执行失败:" + task.getTaskName() + "'", e);
                 getDynamicTaskService().setSuccess(task.getId(), false);
             } finally {
-                getDynamicTaskService().setStarted(task.getId(), false);
+                getDynamicTaskService().setRunning(task.getId(), false);
             }
         };
     }
@@ -180,7 +181,7 @@ public class RunTaskGenerator {
     private static Runnable parseApiTask(DynamicCronTask task) {
         return () -> {
             try {
-                getDynamicTaskService().setStarted(task.getId(), true);
+                getDynamicTaskService().setRunning(task.getId(), true);
                 SystemLogger.info("'Api调用任务开始执行:" + task.getTaskName() + "'");
                 // TODO: 2024/4/25 调用Api
                 getDynamicTaskService().setSuccess(task.getId(), true);
@@ -188,7 +189,7 @@ public class RunTaskGenerator {
                 SystemLogger.error("'Api调用任务执行失败:" + task.getTaskName() + "'", e);
                 getDynamicTaskService().setSuccess(task.getId(), false);
             } finally {
-                getDynamicTaskService().setStarted(task.getId(), false);
+                getDynamicTaskService().setRunning(task.getId(), false);
             }
         };
     }

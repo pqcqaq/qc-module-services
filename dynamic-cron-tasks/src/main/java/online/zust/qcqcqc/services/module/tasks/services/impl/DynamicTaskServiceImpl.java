@@ -1,6 +1,7 @@
 package online.zust.qcqcqc.services.module.tasks.services.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import online.zust.qcqcqc.services.module.tasks.RunTaskGenerator;
@@ -45,12 +46,12 @@ public class DynamicTaskServiceImpl extends EnhanceService<DynamicTaskMapper, Dy
         public void onApplicationEvent(@NotNull ContextRefreshedEvent event) {
             ApplicationContext applicationContext = event.getApplicationContext();
             DynamicTaskServiceImpl dynamicTaskService = applicationContext.getBean(DynamicTaskServiceImpl.class);
-            dynamicTaskService.setAlTaskStatusNormal();
+            dynamicTaskService.setAllTaskStatusNormal();
             dynamicTaskService.startOnBootTasks();
         }
     }
 
-    private void setAlTaskStatusNormal() {
+    private void setAllTaskStatusNormal() {
         LambdaQueryWrapper<DynamicCronTask> eq = new LambdaQueryWrapper<DynamicCronTask>().eq(DynamicCronTask::getStatus, TaskStatus.RUNNING);
         List<DynamicCronTask> list = this.list(eq);
         list.forEach(task -> {
@@ -87,6 +88,9 @@ public class DynamicTaskServiceImpl extends EnhanceService<DynamicTaskMapper, Dy
         if (schedule != null) {
             addScheduledTask(task.getId(), schedule);
         }
+        // 更新状态
+        task.setStatus(TaskStatus.WAITING);
+        updateById(task);
     }
 
     @Override
@@ -105,26 +109,21 @@ public class DynamicTaskServiceImpl extends EnhanceService<DynamicTaskMapper, Dy
             scheduledFuture.cancel(true);
             FUTURE_MAP.remove(id);
             // 更新状态
-            LambdaQueryWrapper<DynamicCronTask> dynamicCronTaskLambdaQueryWrapper = new LambdaQueryWrapper<>();
-            dynamicCronTaskLambdaQueryWrapper.eq(DynamicCronTask::getId, id);
-            dynamicCronTaskLambdaQueryWrapper.select(DynamicCronTask::getStatus);
-            DynamicCronTask task = this.getOne(dynamicCronTaskLambdaQueryWrapper);
-            if (task != null) {
-                task.setStatus(TaskStatus.NORMAL);
-                updateById(task);
-            }
+            LambdaUpdateWrapper<DynamicCronTask> updateWrapper = new LambdaUpdateWrapper<>();
+            updateWrapper.eq(DynamicCronTask::getId, id).set(DynamicCronTask::getStatus, TaskStatus.NORMAL);
+            update(updateWrapper);
             return;
         }
         throw new DynamicTaskException("任务不存在");
     }
 
     @Override
-    public void setStarted(Long id, boolean start) {
+    public void setRunning(Long id, boolean start) {
         DynamicCronTask task = getById(id);
         if (task == null) {
             throw new DynamicTaskException("任务不存在");
         }
-        task.setStatus(TaskStatus.RUNNING);
+        task.setStatus(start ? TaskStatus.RUNNING : TaskStatus.WAITING);
         updateById(task);
     }
 
@@ -184,5 +183,4 @@ public class DynamicTaskServiceImpl extends EnhanceService<DynamicTaskMapper, Dy
             }
         });
     }
-
 }

@@ -62,7 +62,7 @@ public interface DynamicTaskService extends IServiceEnhance<DynamicCronTask> {
      * @param id 任务id
      * @param start 启动状态
      */
-    void setStarted(Long id, boolean start);
+    void setRunning(Long id, boolean start);
 
     /**
      * 设置任务成功状态

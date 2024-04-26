@@ -13,6 +13,7 @@ public enum TaskStatus {
      * 任务状态
      */
     NORMAL("正常"),
+    WAITING("等待中"),
     RUNNING("运行中"),
     PAUSE("暂停");
 
