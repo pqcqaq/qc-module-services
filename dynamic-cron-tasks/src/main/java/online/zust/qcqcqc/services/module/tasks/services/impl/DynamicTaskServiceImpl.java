@@ -45,8 +45,18 @@ public class DynamicTaskServiceImpl extends EnhanceService<DynamicTaskMapper, Dy
         public void onApplicationEvent(@NotNull ContextRefreshedEvent event) {
             ApplicationContext applicationContext = event.getApplicationContext();
             DynamicTaskServiceImpl dynamicTaskService = applicationContext.getBean(DynamicTaskServiceImpl.class);
+            dynamicTaskService.setAlTaskStatusNormal();
             dynamicTaskService.startOnBootTasks();
         }
+    }
+
+    private void setAlTaskStatusNormal() {
+        LambdaQueryWrapper<DynamicCronTask> eq = new LambdaQueryWrapper<DynamicCronTask>().eq(DynamicCronTask::getStatus, TaskStatus.RUNNING);
+        List<DynamicCronTask> list = this.list(eq);
+        list.forEach(task -> {
+            task.setStatus(TaskStatus.NORMAL);
+            updateById(task);
+        });
     }
 
     @Override
@@ -94,6 +104,15 @@ public class DynamicTaskServiceImpl extends EnhanceService<DynamicTaskMapper, Dy
         if (scheduledFuture != null) {
             scheduledFuture.cancel(true);
             FUTURE_MAP.remove(id);
+            // 更新状态
+            LambdaQueryWrapper<DynamicCronTask> dynamicCronTaskLambdaQueryWrapper = new LambdaQueryWrapper<>();
+            dynamicCronTaskLambdaQueryWrapper.eq(DynamicCronTask::getId, id);
+            dynamicCronTaskLambdaQueryWrapper.select(DynamicCronTask::getStatus);
+            DynamicCronTask task = this.getOne(dynamicCronTaskLambdaQueryWrapper);
+            if (task != null) {
+                task.setStatus(TaskStatus.NORMAL);
+                updateById(task);
+            }
             return;
         }
         throw new DynamicTaskException("任务不存在");

@@ -29,11 +29,11 @@ public class DynamicCronTask extends BaseEntity implements Serializable {
     private String cronExpression;
     @ColumnType(type = DataType.Varchar, comment = "任务描述")
     private String taskExplain;
-    @ColumnType(type = DataType.Tinyint, comment = "是否跟随服务启动", nullable = false)
+    @ColumnType(type = DataType.Tinyint, comment = "是否跟随服务启动", nullable = false, defaultValue = "0")
     private Boolean onBoot;
-    @ColumnType(type = DataType.Varchar, comment = "任务类型", nullable = false)
+    @ColumnType(type = DataType.Varchar, comment = "任务类型", nullable = false, defaultValue = "'SPEL'")
     private TaskType taskType;
-    @ColumnType(type = DataType.Varchar, comment = "任务状态", nullable = false)
+    @ColumnType(type = DataType.Varchar, comment = "任务状态", nullable = false, defaultValue = "'NORMAL'")
     private TaskStatus status;
     @ColumnType(type = DataType.Tinyint, comment = "上一次是否执行成功")
     private Boolean isLastSuccess;
