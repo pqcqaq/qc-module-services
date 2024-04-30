@@ -18,7 +18,7 @@ import org.springframework.beans.factory.DisposableBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.scheduling.TaskScheduler;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -37,7 +37,7 @@ import java.util.concurrent.ScheduledFuture;
 @Slf4j
 public class DynamicTaskServiceImpl extends EnhanceService<DynamicTaskMapper, DynamicCronTask> implements DynamicTaskService, DisposableBean {
     private static final ConcurrentHashMap<Long, ScheduledFuture<?>> FUTURE_MAP = new ConcurrentHashMap<>();
-    private final TaskScheduler taskScheduler;
+    private final ThreadPoolTaskScheduler taskScheduler;
 
     @Component
     @Slf4j
@@ -146,17 +146,7 @@ public class DynamicTaskServiceImpl extends EnhanceService<DynamicTaskMapper, Dy
 
     @Override
     public void startOnBootTasks() {
-        fineAllBootTask().forEach(task -> {
-            try {
-                ScheduledFuture<?> schedule = taskScheduler.schedule(RunTaskGenerator.parseTask(task), triggerContext -> new CronTrigger(task.getCronExpression()).nextExecution(triggerContext));
-                log.info("任务 {} 启动成功", task.getTaskName());
-                if (schedule != null) {
-                    addScheduledTask(task.getId(), schedule);
-                }
-            } catch (Exception e) {
-                log.error("任务 {} 启动失败：{}", task.getTaskName(), e);
-            }
-        });
+        fineAllBootTask().forEach(this::startTask);
     }
 
     @Override
@@ -173,6 +163,11 @@ public class DynamicTaskServiceImpl extends EnhanceService<DynamicTaskMapper, Dy
             ScheduledFuture<?> schedule = taskScheduler.schedule(RunTaskGenerator.parseTask(task), triggerContext -> new CronTrigger(task.getCronExpression()).nextExecution(triggerContext));
             addScheduledTask(id, schedule);
         }
+    }
+
+    @Override
+    public List<ScheduledFuture<?>> getCronTaskList() {
+        return List.copyOf(FUTURE_MAP.values());
     }
 
     @Override

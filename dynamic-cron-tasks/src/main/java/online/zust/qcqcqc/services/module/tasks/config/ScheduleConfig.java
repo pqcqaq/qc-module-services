@@ -2,13 +2,9 @@ package online.zust.qcqcqc.services.module.tasks.config;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.TaskScheduler;
-import org.springframework.scheduling.annotation.SchedulingConfigurer;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
-import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 
 /**
  * @author qcqcqc
@@ -16,9 +12,9 @@ import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 @Configuration
 @RequiredArgsConstructor
 @Slf4j
-public class ScheduleConfig implements SchedulingConfigurer {
+public class ScheduleConfig {
     @Bean
-    public TaskScheduler taskScheduler() {
+    public ThreadPoolTaskScheduler taskScheduler() {
         ThreadPoolTaskScheduler threadPoolTaskScheduler = new ThreadPoolTaskScheduler();
         //线程池大小
         threadPoolTaskScheduler.setPoolSize(10);
@@ -29,10 +25,5 @@ public class ScheduleConfig implements SchedulingConfigurer {
         // 等待时长
         threadPoolTaskScheduler.setAwaitTerminationSeconds(60);
         return threadPoolTaskScheduler;
-    }
-
-    @Override
-    public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
-        taskRegistrar.setTaskScheduler(taskScheduler());
     }
 }

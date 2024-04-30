@@ -90,7 +90,7 @@
         <dependency>
             <groupId>online.zust.qcqcqc.utils</groupId>
             <artifactId>mbp-enhance</artifactId>
-            <version>1.4.1</version>
+            <version>1.4.2</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains</groupId>
@@ -122,7 +122,7 @@
         <dependency>
             <groupId>online.zust.qcqcqc.utils</groupId>
             <artifactId>threads-utils-spring-boot-starter</artifactId>
-            <version>1.2.3</version>
+            <version>1.2.4</version>
         </dependency>
     </dependencies>
 
