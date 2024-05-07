@@ -13,7 +13,8 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @Import({
         LocalStorageHandler.class,
-        MinioStorageHandler.class
+        MinioStorageHandler.class,
+        DefaultHandlerConfig.class
 })
 public class HandlerInject {
 }
