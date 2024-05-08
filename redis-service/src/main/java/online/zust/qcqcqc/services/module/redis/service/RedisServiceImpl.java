@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import online.zust.qcqcqc.services.exception.ServiceException;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class RedisServiceImpl implements RedisService {
+public class RedisServiceImpl implements RedisService, InitializingBean {
     private final RedisTemplate<String, String> redisTemplate;
     private final ObjectMapper objectMapper;
 
@@ -197,5 +198,10 @@ public class RedisServiceImpl implements RedisService {
             return expire;
         }
         return expire + System.currentTimeMillis();
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        log.info("RedisService init");
     }
 }

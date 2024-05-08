@@ -15,6 +15,7 @@ import online.zust.qcqcqc.utils.EnhanceService;
 import online.zust.qcqcqc.utils.utils.BeanConvertUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
