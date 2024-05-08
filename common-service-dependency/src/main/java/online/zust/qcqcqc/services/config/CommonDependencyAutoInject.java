@@ -1,11 +1,9 @@
 package online.zust.qcqcqc.services.config;
 
 import online.zust.qcqcqc.services.async.AsyncConfig;
-import online.zust.qcqcqc.services.config.defaults.DefaultCurrentUserGetter;
 import online.zust.qcqcqc.services.entity.checker.CheckHandler;
-import online.zust.qcqcqc.services.utils.JwtUtils;
-import online.zust.qcqcqc.services.utils.ResponseUtils;
 import online.zust.qcqcqc.services.utils.SpElParser;
+import online.zust.qcqcqc.services.utils.config.MbpUtilsAutoInject;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
@@ -20,9 +18,8 @@ import org.springframework.context.annotation.Import;
         SpElParser.class,
         CheckHandler.class,
         MbpMetaObjectHandler.class,
-        DefaultCurrentUserGetter.class,
-        JwtUtils.class,
-        ResponseUtils.class
+        MbpEnhanceMapperScannerConfigurer.class,
+        MbpUtilsAutoInject.class,
 })
 public class CommonDependencyAutoInject {
 }
