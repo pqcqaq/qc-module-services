@@ -1,8 +1,6 @@
 package online.zust.qcqcqc.services.module.user.config;
 
 import lombok.extern.slf4j.Slf4j;
-import online.zust.qcqcqc.services.module.user.filter.JwtAuthenticationFilter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;

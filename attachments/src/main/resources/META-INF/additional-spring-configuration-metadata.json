@@ -44,7 +44,6 @@
     {
       "name": "storage.minio.bucketName",
       "type": "java.lang.String",
-
       "description": "minio服务存储桶.",
       "defaultValue": "default"
     }

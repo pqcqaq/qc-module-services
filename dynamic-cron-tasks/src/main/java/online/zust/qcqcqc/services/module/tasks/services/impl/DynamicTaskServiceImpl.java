@@ -15,7 +15,6 @@ import online.zust.qcqcqc.utils.EnhanceService;
 import online.zust.qcqcqc.utils.utils.BeanConvertUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.DisposableBean;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -39,18 +38,6 @@ import java.util.concurrent.ScheduledFuture;
 public class DynamicTaskServiceImpl extends EnhanceService<DynamicTaskMapper, DynamicCronTask> implements DynamicTaskService, DisposableBean {
     private static final ConcurrentHashMap<Long, ScheduledFuture<?>> FUTURE_MAP = new ConcurrentHashMap<>();
     private final ThreadPoolTaskScheduler taskScheduler;
-
-    @Component
-    @Slf4j
-    public static class ContextRefreshedListener implements ApplicationListener<ContextRefreshedEvent> {
-        @Override
-        public void onApplicationEvent(@NotNull ContextRefreshedEvent event) {
-            ApplicationContext applicationContext = event.getApplicationContext();
-            DynamicTaskServiceImpl dynamicTaskService = applicationContext.getBean(DynamicTaskServiceImpl.class);
-            dynamicTaskService.setAllTaskStatusNormal();
-            dynamicTaskService.startOnBootTasks();
-        }
-    }
 
     private void setAllTaskStatusNormal() {
         LambdaQueryWrapper<DynamicCronTask> eq = new LambdaQueryWrapper<DynamicCronTask>().eq(DynamicCronTask::getStatus, TaskStatus.RUNNING);
@@ -178,5 +165,17 @@ public class DynamicTaskServiceImpl extends EnhanceService<DynamicTaskMapper, Dy
                 future.cancel(true);
             }
         });
+    }
+
+    @Component
+    @Slf4j
+    public static class ContextRefreshedListener implements ApplicationListener<ContextRefreshedEvent> {
+        @Override
+        public void onApplicationEvent(@NotNull ContextRefreshedEvent event) {
+            ApplicationContext applicationContext = event.getApplicationContext();
+            DynamicTaskServiceImpl dynamicTaskService = applicationContext.getBean(DynamicTaskServiceImpl.class);
+            dynamicTaskService.setAllTaskStatusNormal();
+            dynamicTaskService.startOnBootTasks();
+        }
     }
 }

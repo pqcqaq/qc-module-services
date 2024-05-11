@@ -42,7 +42,7 @@ public class PageResult<T> {
         this.data = datas;
     }
 
-    public PageResult(Page<T> pageResult){
+    public PageResult(Page<T> pageResult) {
         this.pageNum = pageResult.getCurrent();
         this.pageSize = pageResult.getSize();
         this.total = pageResult.getTotal();

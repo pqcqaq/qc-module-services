@@ -33,6 +33,10 @@ public interface UserService extends IServiceEnhance<User> {
 
     String changePassword(ChangePasswordDto userPublish);
 
+    String disableUser(String id);
+
+    String enableUser(String id);
+
     String deleteUser(String id);
 
     String openApplication();

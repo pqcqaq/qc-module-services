@@ -21,13 +21,13 @@ public class JwtUtils {
     /**
      * token密钥
      */
-    @Value("${token.secret:123456789123456789}")
+    @Value("${token.secret}")
     private String secret;
 
     /**
      * token过期时间,单位：ms
      */
-    @Value("${token.expireTime:3600000}")
+    @Value("${token.expiration:3600000}")
     private int expireTime;
 
     private ObjectMapper objectMapper;

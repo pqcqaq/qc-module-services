@@ -12,9 +12,9 @@ import java.io.Serial;
 @Getter
 @SuppressWarnings("unused")
 public class ServiceException extends RuntimeException {
-    private final int code;
     @Serial
     private static final long serialVersionUID = -5189846607032477439L;
+    private final int code;
 
     public ServiceException(String message) {
         super(message);

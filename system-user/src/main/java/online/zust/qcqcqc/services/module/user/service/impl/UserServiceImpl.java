@@ -1,6 +1,7 @@
 package online.zust.qcqcqc.services.module.user.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,6 +16,7 @@ import online.zust.qcqcqc.services.module.user.entity.dto.LoginParam;
 import online.zust.qcqcqc.services.module.user.entity.dto.RegisterParam;
 import online.zust.qcqcqc.services.module.user.entity.dto.UserPublish;
 import online.zust.qcqcqc.services.module.user.entity.vo.UserVo;
+import online.zust.qcqcqc.services.module.user.exception.ErrorLoginException;
 import online.zust.qcqcqc.services.module.user.mapper.UserMapper;
 import online.zust.qcqcqc.services.module.user.service.UserService;
 import online.zust.qcqcqc.services.utils.JwtUtils;
@@ -25,7 +27,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -49,12 +50,22 @@ public class UserServiceImpl extends EnhanceService<UserMapper, User> implements
     /**
      * token过期时间,单位：ms
      */
-    @Value("${token.ExpireTime}")
-    private int expireTime;
+    @Value("${token.expiration}")
+    private long expireTime;
 
     @Override
     public boolean register(RegisterParam registerParam) {
-        return false;
+        User user = BeanConvertUtils.objectConvent(registerParam, User.class);
+        ArrayList<String> roles = new ArrayList<>();
+        roles.add("USER");
+        user.setRoles(roles);
+        user.setEnabled(true);
+        checkUserName(user.getUsername());
+        String password = user.getPassword();
+        // 检查密码
+        checkPassword(password);
+        user.setPassword(passwordEncoder.encode(password));
+        return this.save(user);
     }
 
     @Override
@@ -66,7 +77,7 @@ public class UserServiceImpl extends EnhanceService<UserMapper, User> implements
         //获取用户信息（getPrincipal()）
         Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         if (authenticate == null) {
-            throw new UsernameNotFoundException("登录失败");
+            throw new ErrorLoginException("登录失败");
         }
         UserLogin userLogin = (UserLogin) authenticate.getPrincipal();
         User user = userLogin.getUser();
@@ -171,6 +182,24 @@ public class UserServiceImpl extends EnhanceService<UserMapper, User> implements
         user.setPassword(passwordEncoder.encode(password));
         this.updateById(user);
         return "修改密码成功";
+    }
+
+    @Override
+    public String disableUser(String id) {
+        LambdaUpdateWrapper<User> userLambdaUpdateWrapper = new LambdaUpdateWrapper<>();
+        userLambdaUpdateWrapper.eq(User::getId, id);
+        User user = new User();
+        user.setEnabled(false);
+        return this.update(user, userLambdaUpdateWrapper) ? "禁用用户成功" : "禁用用户失败";
+    }
+
+    @Override
+    public String enableUser(String id) {
+        LambdaUpdateWrapper<User> userLambdaUpdateWrapper = new LambdaUpdateWrapper<>();
+        userLambdaUpdateWrapper.eq(User::getId, id);
+        User user = new User();
+        user.setEnabled(true);
+        return this.update(user, userLambdaUpdateWrapper) ? "启用用户成功" : "启用用户失败";
     }
 
     private void checkUserNameExceptId(User user) {

@@ -4,7 +4,7 @@
       "result": true,
       "resultName": "returnValue",
       "parameters": true,
-      "parametersPrefix":[]
+      "parametersPrefix": []
     }
   },
   "online.zust.qcqcqc.services.module.log.annotation.OperationLog@condition": {
@@ -12,7 +12,7 @@
       "result": true,
       "resultName": "returnValue",
       "parameters": true,
-      "parametersPrefix":[]
+      "parametersPrefix": []
     }
   }
 }

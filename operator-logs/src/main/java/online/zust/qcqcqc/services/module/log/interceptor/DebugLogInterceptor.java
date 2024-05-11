@@ -25,9 +25,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class DebugLogInterceptor implements HandlerInterceptor {
 
-    private final ObjectMapper objectMapper;
-
     private static final ThreadLocal<Map<String, String>> operatorLogMetadataThreadLocal = new ThreadLocal<>();
+    private final ObjectMapper objectMapper;
 
     @Override
     public boolean preHandle(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull Object handler) throws Exception {

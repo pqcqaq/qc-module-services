@@ -13,6 +13,7 @@ import java.io.InputStream;
 public interface AttachmentsStorageHandler {
     /**
      * 上传附件
+     *
      * @param attachment 附件
      * @return 实际文件名
      */
@@ -20,6 +21,7 @@ public interface AttachmentsStorageHandler {
 
     /**
      * 获取附件外部访问地址
+     *
      * @param fileName 文件名
      * @return 外部访问地址
      */
@@ -27,6 +29,7 @@ public interface AttachmentsStorageHandler {
 
     /**
      * 删除附件
+     *
      * @param fileName 文件名
      * @return 是否删除成功
      */
@@ -34,6 +37,7 @@ public interface AttachmentsStorageHandler {
 
     /**
      * 获取文件输入流
+     *
      * @param fileName 文件名
      * @return 文件输入流
      */
@@ -41,6 +45,7 @@ public interface AttachmentsStorageHandler {
 
     /**
      * 上传文件
+     *
      * @param file 文件
      * @return 实际文件名
      */

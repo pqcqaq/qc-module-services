@@ -2,7 +2,6 @@ package online.zust.qcqcqc.services.module.tasks.services;
 
 import online.zust.qcqcqc.services.module.tasks.entity.DynamicCronTask;
 import online.zust.qcqcqc.utils.IServiceEnhance;
-import org.springframework.scheduling.config.CronTask;
 
 import java.util.List;
 import java.util.concurrent.ScheduledFuture;

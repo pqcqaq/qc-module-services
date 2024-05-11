@@ -21,13 +21,13 @@ public class QcKeyDeleteEvent extends KeyDeleteEventMessageListener {
 
     private List<KeyDeleteObserver> listeners;
 
+    public QcKeyDeleteEvent(RedisMessageListenerContainer listenerContainer) {
+        super(listenerContainer);
+    }
+
     @Autowired(required = false)
     public void setListeners(List<KeyDeleteObserver> listeners) {
         this.listeners = listeners;
-    }
-
-    public QcKeyDeleteEvent(RedisMessageListenerContainer listenerContainer) {
-        super(listenerContainer);
     }
 
     @Override

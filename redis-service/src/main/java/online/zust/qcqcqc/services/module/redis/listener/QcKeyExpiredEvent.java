@@ -20,13 +20,13 @@ public class QcKeyExpiredEvent extends KeyExpirationEventMessageListener {
 
     private List<KeyExpiredObserver> listeners;
 
+    public QcKeyExpiredEvent(RedisMessageListenerContainer listenerContainer) {
+        super(listenerContainer);
+    }
+
     @Autowired(required = false)
     public void setListeners(List<KeyExpiredObserver> listeners) {
         this.listeners = listeners;
-    }
-
-    public QcKeyExpiredEvent(RedisMessageListenerContainer listenerContainer) {
-        super(listenerContainer);
     }
 
     @Override

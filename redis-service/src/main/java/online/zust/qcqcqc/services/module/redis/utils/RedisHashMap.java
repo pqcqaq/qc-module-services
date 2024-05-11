@@ -21,18 +21,6 @@ public class RedisHashMap<T> {
     private long timeoutAt;
 
     /**
-     * 获取redisService
-     *
-     * @return redisService
-     */
-    private static RedisService getRedisService() {
-        if (redisService == null) {
-            redisService = ProxyUtil.getBean(RedisService.class);
-        }
-        return redisService;
-    }
-
-    /**
      * 通过key创建，则从redis中同步数据
      *
      * @param key key
@@ -62,6 +50,18 @@ public class RedisHashMap<T> {
         Data.putAll(getRedisService().getMap(key, valueType));
         getRedisService().putMap(key, map);
         timeoutAt = getRedisService().getTimeoutAt(this.key);
+    }
+
+    /**
+     * 获取redisService
+     *
+     * @return redisService
+     */
+    private static RedisService getRedisService() {
+        if (redisService == null) {
+            redisService = ProxyUtil.getBean(RedisService.class);
+        }
+        return redisService;
     }
 
     /**

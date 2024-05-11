@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "token.secret",
+      "type": "java.lang.String",
+      "description": "JWT密钥."
+    },
+    {
+      "name": "token.expiration",
+      "type": "java.lang.Long",
+      "description": "JWT过期时间(ms)."
+    }
+  ]
+}

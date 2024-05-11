@@ -21,10 +21,25 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Slf4j
 public class LoggingAspect {
-    private final LogService logService;
-
     static {
         log.info("LoggingAspect loaded");
+    }
+
+    private final LogService logService;
+
+    /**
+     * 返回结果或者抛出异常
+     *
+     * @param throwable 异常
+     * @param proceed   结果
+     * @return 结果
+     * @throws Throwable 异常
+     */
+    private static Object returnOrThrow(Throwable throwable, Object proceed) throws Throwable {
+        if (throwable != null) {
+            throw throwable;
+        }
+        return proceed;
     }
 
     /**
@@ -72,20 +87,5 @@ public class LoggingAspect {
         }
         logService.saveAnnotationLog(operationLog, args, parameterNames, proceed, operatorLog);
         return returnOrThrow(throwable, proceed);
-    }
-
-    /**
-     * 返回结果或者抛出异常
-     *
-     * @param throwable 异常
-     * @param proceed   结果
-     * @return 结果
-     * @throws Throwable 异常
-     */
-    private static Object returnOrThrow(Throwable throwable, Object proceed) throws Throwable {
-        if (throwable != null) {
-            throw throwable;
-        }
-        return proceed;
     }
 }

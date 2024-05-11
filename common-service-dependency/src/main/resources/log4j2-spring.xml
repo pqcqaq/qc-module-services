@@ -21,8 +21,8 @@
             <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
             <Policies>
                 <DefaultRolloverStrategy max="20"/>   <!--文件夹下最多的文件个数-->
-                <TimeBasedTriggeringPolicy interval="2 hour"/>			<!--多长时间滚动一次-->
-                <SizeBasedTriggeringPolicy size="100 MB"/>		<!-- 一个日志文件的最大大小 -->
+                <TimeBasedTriggeringPolicy interval="2 hour"/>            <!--多长时间滚动一次-->
+                <SizeBasedTriggeringPolicy size="100 MB"/>        <!-- 一个日志文件的最大大小 -->
             </Policies>
         </RollingFile>
 

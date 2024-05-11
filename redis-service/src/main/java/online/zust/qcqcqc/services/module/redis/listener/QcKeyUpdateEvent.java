@@ -19,13 +19,13 @@ public class QcKeyUpdateEvent extends KeyUpdateEventMessageListener {
 
     private List<KeyUpdateObserver> listeners;
 
+    public QcKeyUpdateEvent(RedisMessageListenerContainer listenerContainer) {
+        super(listenerContainer);
+    }
+
     @Autowired(required = false)
     public void setListeners(List<KeyUpdateObserver> listeners) {
         this.listeners = listeners;
-    }
-
-    public QcKeyUpdateEvent(RedisMessageListenerContainer listenerContainer) {
-        super(listenerContainer);
     }
 
     @Override

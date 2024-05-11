@@ -1,9 +1,9 @@
 package online.zust.qcqcqc.services.module.user.exception;
 
 import lombok.Getter;
+import online.zust.qcqcqc.services.exception.ServiceException;
 
 import java.io.Serial;
-import java.rmi.ServerException;
 
 /**
  * @author qcqcqc
@@ -11,15 +11,16 @@ import java.rmi.ServerException;
  * Time: 下午11:46
  */
 @Getter
-public class ErrorLoginException extends ServerException {
-    @Serial
-    private static final long serialVersionUID = 7503551487558248481L;
+public class ErrorLoginException extends ServiceException {
 
-    public ErrorLoginException(String s) {
-        super(s);
+    @Serial
+    private static final long serialVersionUID = -3284770015633974298L;
+
+    public ErrorLoginException(String message) {
+        super(message);
     }
 
-    public ErrorLoginException(String s, Exception ex) {
-        super(s, ex);
+    public ErrorLoginException(String message, int code) {
+        super(message, code);
     }
 }

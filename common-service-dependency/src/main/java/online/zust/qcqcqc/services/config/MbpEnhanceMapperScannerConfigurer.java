@@ -16,8 +16,8 @@ import java.util.Map;
 @Slf4j
 @Component
 public class MbpEnhanceMapperScannerConfigurer extends MapperScannerConfigurer {
-    private static String applicationBasePackage;
     private static final String BASE_PACKAGE = "online.zust.qcqcqc.services.module.**.mapper";
+    private static String applicationBasePackage;
 
     @Override
     public void afterPropertiesSet() throws Exception {
