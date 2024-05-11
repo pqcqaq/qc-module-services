@@ -21,6 +21,7 @@ public class UserVo {
     private String phone;
     @FromField(fieldPath = "roles")
     private List<String> roles;
+    private Boolean enabled;
     @RequireDefault("\"******\"")
     private String password;
     private Date createTime;
