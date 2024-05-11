@@ -95,6 +95,6 @@ public class UserLogin implements UserDetails {
     @Override
     @JsonIgnore
     public boolean isEnabled() {
-        return true;
+        return user.isEnabled();
     }
 }
