@@ -17,7 +17,7 @@ import online.zust.qcqcqc.services.module.user.entity.dto.RegisterParam;
 import online.zust.qcqcqc.services.module.user.entity.dto.UserPublish;
 import online.zust.qcqcqc.services.module.user.entity.vo.UserVo;
 import online.zust.qcqcqc.services.module.user.exception.ErrorLoginException;
-import online.zust.qcqcqc.services.module.user.mapper.UserMapper;
+import online.zust.qcqcqc.services.module.user.mapper.MyUserMapper;
 import online.zust.qcqcqc.services.module.user.service.UserService;
 import online.zust.qcqcqc.services.utils.JwtUtils;
 import online.zust.qcqcqc.utils.EnhanceService;
@@ -41,7 +41,7 @@ import java.util.List;
  */
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl extends EnhanceService<UserMapper, User> implements UserService {
+public class UserServiceImpl extends EnhanceService<MyUserMapper, User> implements UserService {
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;
     private final RedisService redisService;

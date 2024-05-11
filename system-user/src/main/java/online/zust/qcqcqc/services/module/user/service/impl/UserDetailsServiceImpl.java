@@ -3,7 +3,7 @@ package online.zust.qcqcqc.services.module.user.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import online.zust.qcqcqc.services.module.user.entity.User;
 import online.zust.qcqcqc.services.module.user.entity.UserLogin;
-import online.zust.qcqcqc.services.module.user.mapper.UserMapper;
+import online.zust.qcqcqc.services.module.user.mapper.MyUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,7 +18,7 @@ import java.util.Objects;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
-    private UserMapper userMapper;
+    private MyUserMapper userMapper;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
