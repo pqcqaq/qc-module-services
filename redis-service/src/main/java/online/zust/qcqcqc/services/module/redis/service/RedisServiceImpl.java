@@ -201,6 +201,11 @@ public class RedisServiceImpl implements RedisService, InitializingBean {
     }
 
     @Override
+    public RedisTemplate<String, String> getRedisTemplate() {
+        return redisTemplate;
+    }
+
+    @Override
     public void afterPropertiesSet() throws Exception {
         log.info("RedisService init");
     }

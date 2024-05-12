@@ -1,6 +1,7 @@
 package online.zust.qcqcqc.services.module.redis.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.List;
 import java.util.Map;
@@ -187,4 +188,10 @@ public interface RedisService {
      * @return 过期时间的毫秒值
      */
     long getTimeoutAt(String key);
+
+    /**
+     *  获取redisTemplate
+     * @return redisTemplate
+     */
+    RedisTemplate<String, String> getRedisTemplate();
 }
