@@ -5,6 +5,8 @@ import online.zust.qcqcqc.utils.utils.BeanConvertUtils;
 import online.zust.qcqcqc.utils.utils.ProxyUtil;
 import org.springframework.data.redis.core.RedisTemplate;
 
+import java.time.Duration;
+
 /**
  * @author qcqcqc
  * Date: 2024/5/12
@@ -61,6 +63,10 @@ public class RedisString<T> {
 
     public void del() {
         getRedisTemplate().delete(key);
+    }
+
+    public void setTimeout(Long timeoutMillionSecond) {
+        getRedisTemplate().expire(key, Duration.ofMillis(timeoutMillionSecond));
     }
 
     public Boolean isTimeout() {
