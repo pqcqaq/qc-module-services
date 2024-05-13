@@ -42,6 +42,7 @@ public class ChainServiceImpl implements ChainService {
         this.chainClient = chainClient;
         this.user = user;
         this.defaultContract = defaultContract;
+        log.info("长安链区块链服务已初始化......");
     }
 
     /**

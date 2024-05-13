@@ -113,6 +113,15 @@ public class FileUtils {
             throw new UtilsException("cannot open file : " + replace);
         }
         String replace = getPathTrim(filePath);
+        // 在windows目录下，直接读取那个目录文件：
+        if (replace.contains(":")) {
+            File file = new File(replace);
+            try {
+                return Files.readAllBytes(file.toPath());
+            } catch (IOException e) {
+                throw new UtilsException("get file by path err : " + e.getMessage());
+            }
+        }
         byte[] fileBytes;
         Resource classPathResource = new ClassPathResource(replace);
         try {

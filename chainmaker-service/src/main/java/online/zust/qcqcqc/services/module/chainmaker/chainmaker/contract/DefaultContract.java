@@ -26,9 +26,9 @@ public class DefaultContract {
     private static final String CONTRACT_NAME = "counter_sdk_java_demo";
     private static final String CONTRACT_FILE_PATH = "/rust-fact-1.0.0.wasm";
 
-    @Value("${chain.rpc-call-timeout}")
+    @Value("${chain.rpc-call-timeout:10000}")
     private Long rpcCallTimeout;
-    @Value("${chain.sync-result-timeout}")
+    @Value("${chain.sync-result-timeout:10000}")
     private Long syncResultTimeout;
 
     public TxResponse createContract(ChainClient chainClient, User... user) {
