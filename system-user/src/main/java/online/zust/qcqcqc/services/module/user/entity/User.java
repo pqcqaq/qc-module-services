@@ -40,7 +40,7 @@ public class User extends BaseEntity implements Serializable {
     @ColumnType(type = DataType.Bigint, comment = "头像图片ID")
     private Long avatarId;
     @ColumnType(type = DataType.Tinyint, length = 1, comment = "是否启用", nullable = false, defaultValue = "1")
-    private boolean enabled;
+    private Boolean enabled;
 
     /**
      * 查询关联的图片

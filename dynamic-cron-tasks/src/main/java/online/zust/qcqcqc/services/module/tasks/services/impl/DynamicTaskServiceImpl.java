@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import online.zust.qcqcqc.services.module.tasks.RunTaskGenerator;
 import online.zust.qcqcqc.services.module.tasks.entity.DynamicCronTask;
-import online.zust.qcqcqc.services.module.tasks.entity.SpelMetadata;
+import online.zust.qcqcqc.services.module.tasks.entity.metadata.SpelMetadata;
 import online.zust.qcqcqc.services.module.tasks.enums.TaskStatus;
 import online.zust.qcqcqc.services.module.tasks.exception.DynamicTaskException;
 import online.zust.qcqcqc.services.module.tasks.mapper.DynamicTaskMapper;

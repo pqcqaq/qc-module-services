@@ -1,4 +1,4 @@
-package online.zust.qcqcqc.services.module.tasks.entity;
+package online.zust.qcqcqc.services.module.tasks.entity.metadata;
 
 import lombok.Data;
 
@@ -8,6 +8,6 @@ import lombok.Data;
  * Time: 下午10:03
  */
 @Data
-public class SpelMetadata {
+public class SpelMetadata implements CronTaskMetadata{
     private String spel;
 }

@@ -15,10 +15,15 @@ import java.time.Duration;
 public class RedisString<T> {
     private static RedisService redisService;
     private final Class<T> valueType;
-    private final Long  timeoutAt;
+    private final Long timeoutAt;
 
     public T get() {
-        return BeanConvertUtils.objectConvent(getRedisTemplate().opsForValue().get(key), valueType);
+        String entity = getRedisTemplate().opsForValue().get(key);
+        // 如果是java的基本类型，直接返回
+        if (valueType.getTypeName().startsWith("java")) {
+            return (T) entity;
+        }
+        return BeanConvertUtils.objectConvent(entity, valueType);
     }
 
     public String getKey() {
