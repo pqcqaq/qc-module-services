@@ -1,0 +1,17 @@
+{
+  "groups": [],
+  "properties": [
+    {
+      "name": "chain.rpc-call-timeout",
+      "type": "java.lang.Long",
+      "value": "10000",
+      "description": "区块链RPC调用超时时间."
+    },
+    {
+      "name": "chain.sync-result-timeout",
+        "type": "java.lang.Long",
+        "value": "10000",
+        "description": "区块链同步结果超时时间."
+    }
+  ]
+}
