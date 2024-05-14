@@ -20,4 +20,7 @@ public class RegisterParam implements Serializable {
     @NotBlank(message = "密码不能为空")
     @Length(min = 8, max = 30, message = "密码长度为8-30位")
     private String password;
+    @NotBlank(message = "手机号不能为空")
+    @Length(min = 11, max = 11, message = "手机号长度为11位")
+    private String phone;
 }
