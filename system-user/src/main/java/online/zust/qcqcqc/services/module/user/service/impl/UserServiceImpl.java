@@ -60,6 +60,7 @@ public class UserServiceImpl extends EnhanceService<MyUserMapper, User> implemen
         roles.add("USER");
         user.setRoles(roles);
         user.setEnabled(true);
+        user.setPhone(registerParam.getPhone());
         checkUserName(user.getUsername());
         String password = user.getPassword();
         // 检查密码
